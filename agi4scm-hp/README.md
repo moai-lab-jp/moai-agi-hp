@@ -50,7 +50,7 @@ HTML・CSS・JS だけの静的なページなので、ビルドは要りませ�
 ## 公開の前にすること
 
 1. **フォームの受け口を配備する**（上の手順）。
-2. **置き場所**は `https://www.moai-lab.jp/agi4scm/` を前提にしています。別の場所に置くなら、`index.html` と `privacy.html` の `canonical`、`index.html` の `og:url`・`og:image` を直してください。
+2. **置き場所**は `https://agi.moai-lab.jp/agi4scm-hp/` を前提にしています（リポジトリの直下が `https://agi.moai-lab.jp/`）。別の場所に置くなら、`index.html` と `privacy.html` の `canonical`、`index.html` の `og:url`・`og:image` を直してください。suite（`../index.html`・`../privacy.html`）と AGI4OPT（`../agi4opt-hp/`）も同じです。
 3. **個人情報の取り扱い（`privacy.html`）を確かめる。** 全社の[プライバシーポリシー](https://www.moai-lab.jp/about/privacy-policy)と会社概要（所在地・代表者）をもとに書き、
    このフォームで実際に起きること（Google Workspace での保管、Cookie を使わないこと）を足しました。
    「取り扱いの委託」と「安全管理」は当社の約束になる部分なので、社内で確認してください。
