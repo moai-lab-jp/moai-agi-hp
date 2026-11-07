@@ -1,591 +1,1580 @@
 <!doctype html>
 <html lang="ja">
+
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>MOAI AGI Suite | 最適化とサプライチェーンのための汎用人工知能</title>
-<meta name="description" content="MOAI AGI Suite は、自然言語の依頼と元データだけで、最適化問題とサプライチェーンの分析・最適化を行い、検算つきのダッシュボードで返す Agentic AI 群です。AGI4OPT と AGI4SCM の 2 製品からなります。MOAI Lab.">
-<link rel="icon" href="agi4opt/assets/moai-logo.png">
-<link rel="canonical" href="https://agi.moai-lab.jp/">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://agi.moai-lab.jp/">
-<meta property="og:image" content="https://agi.moai-lab.jp/agi4scm/assets/logistics-network.jpg">
-<meta property="og:locale" content="ja_JP">
-<meta property="og:site_name" content="MOAI AGI Suite">
-<meta name="twitter:card" content="summary_large_image">
-<meta property="og:title" content="MOAI AGI Suite | 最適化とサプライチェーンのための汎用人工知能">
-<meta property="og:description" content="依頼文とデータを渡すだけ。検算つきのダッシュボードで返す Agentic AI。AGI4OPT と AGI4SCM。">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,400..800&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap" rel="stylesheet">
-<style>
-:root{
-  --paper:#F3F6F6;
-  --paper-2:#E7EDEC;
-  --card:#FFFFFF;
-  --ink:#122634;
-  --muted:#4F6470;
-  --rule:#C9D4D3;
-  --opt:#0B7D68;       /* AGI4OPT：緑ブイ */
-  --opt-wash:#DDEFEA;
-  --scm:#1C5AA3;       /* AGI4SCM：港の青 */
-  --scm-wash:#E2EBF6;
-  --signal:#F0B429;
-  --on-ink:#F3F6F6;
-  --logo-filter:none;
-  --shadow:0 1px 2px rgba(18,38,52,.06),0 12px 32px -16px rgba(18,38,52,.25);
-  --sans:"Zen Kaku Gothic New",system-ui,-apple-system,"Hiragino Sans",sans-serif;
-  --num:"Archivo","Zen Kaku Gothic New",sans-serif;
-  --gutter:clamp(16px,4vw,48px);
-  --max:1180px;
-}
-@media (prefers-color-scheme:dark){
-  :root:not([data-theme="light"]){
-    --paper:#0C1C26; --paper-2:#122A37; --card:#13293A; --ink:#E4ECEA; --muted:#98AEB5; --rule:#2A4859;
-    --opt:#3CC4A3; --opt-wash:#123A35; --scm:#7FAEDC; --scm-wash:#15304A; --on-ink:#0C1C26;
-    --logo-filter:invert(1); --shadow:0 1px 2px rgba(0,0,0,.3),0 12px 32px -16px rgba(0,0,0,.6);
-  }
-}
-:root[data-theme="dark"]{
-  --paper:#0C1C26; --paper-2:#122A37; --card:#13293A; --ink:#E4ECEA; --muted:#98AEB5; --rule:#2A4859;
-  --opt:#3CC4A3; --opt-wash:#123A35; --scm:#7FAEDC; --scm-wash:#15304A; --on-ink:#0C1C26;
-  --logo-filter:invert(1); --shadow:0 1px 2px rgba(0,0,0,.3),0 12px 32px -16px rgba(0,0,0,.6);
-}
-*,*::before,*::after{box-sizing:border-box}
-html{scroll-behavior:smooth;scroll-padding-top:72px}
-@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
-body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:17px;line-height:1.85;font-feature-settings:"palt" 1;-webkit-font-smoothing:antialiased;overflow-x:hidden}
-img{max-width:100%;height:auto;display:block}
-a{color:inherit}
-h1,h2,h3{word-break:auto-phrase}
-p{margin:0}
-:focus-visible{outline:3px solid var(--signal);outline-offset:3px;border-radius:2px}
-.skip{position:absolute;left:-999px;top:8px;z-index:100;background:var(--ink);color:var(--on-ink);padding:8px 14px;border-radius:4px}
-.skip:focus{left:8px}
-.wrap{max-width:var(--max);margin:0 auto;padding:0 var(--gutter)}
-.mark{font-family:var(--num);font-weight:800;font-stretch:112%;letter-spacing:.01em}
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MOAI AGI Suite | 最適化とサプライチェーンのための汎用人工知能</title>
+  <meta name="description"
+    content="MOAI AGI Suite は、自然言語の依頼と元データだけで、最適化問題とサプライチェーンの分析・最適化を行い、検算つきのダッシュボードで返す Agentic AI 群です。AGI4OPT と AGI4SCM の 2 製品からなります。MOAI Lab.">
+  <link rel="icon" href="agi4opt/assets/moai-logo.png">
+  <link rel="canonical" href="https://agi.moai-lab.jp/">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://agi.moai-lab.jp/">
+  <meta property="og:image" content="https://agi.moai-lab.jp/agi4scm/assets/logistics-network.jpg">
+  <meta property="og:locale" content="ja_JP">
+  <meta property="og:site_name" content="MOAI AGI Suite">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta property="og:title" content="MOAI AGI Suite | 最適化とサプライチェーンのための汎用人工知能">
+  <meta property="og:description" content="依頼文とデータを渡すだけ。検算つきのダッシュボードで返す Agentic AI。AGI4OPT と AGI4SCM。">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,400..800&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --paper: #F3F6F6;
+      --paper-2: #E7EDEC;
+      --card: #FFFFFF;
+      --ink: #122634;
+      --muted: #4F6470;
+      --rule: #C9D4D3;
+      --opt: #0B7D68;
+      /* AGI4OPT：緑ブイ */
+      --opt-wash: #DDEFEA;
+      --scm: #1C5AA3;
+      /* AGI4SCM：港の青 */
+      --scm-wash: #E2EBF6;
+      --signal: #F0B429;
+      --on-ink: #F3F6F6;
+      --logo-filter: none;
+      --shadow: 0 1px 2px rgba(18, 38, 52, .06), 0 12px 32px -16px rgba(18, 38, 52, .25);
+      --sans: "Zen Kaku Gothic New", system-ui, -apple-system, "Hiragino Sans", sans-serif;
+      --num: "Archivo", "Zen Kaku Gothic New", sans-serif;
+      --gutter: clamp(16px, 4vw, 48px);
+      --max: 1180px;
+    }
 
-/* header */
-.site-head{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--paper) 92%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--rule)}
-.site-head .wrap{display:flex;align-items:center;gap:24px;height:64px}
-.brand{display:flex;align-items:center;gap:10px;text-decoration:none}
-.brand img{width:30px;filter:var(--logo-filter)}
-.brand .mark{font-size:19px}
-.brand small{font-weight:500;font-size:12px;color:var(--muted)}
-.site-head nav{margin-left:auto;display:flex;gap:22px;font-size:14px}
-.site-head nav a{text-decoration:none;color:var(--muted)}
-.site-head nav a:hover{color:var(--ink)}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:46px;padding:0 22px;border-radius:4px;background:var(--ink);color:var(--on-ink);text-decoration:none;font-weight:700;font-size:15px;border:1.5px solid var(--ink);transition:background-color .15s,color .15s}
-.btn:hover{background:transparent;color:var(--ink)}
-.btn.ghost{background:transparent;color:var(--ink)}
-.btn.ghost:hover{background:var(--ink);color:var(--on-ink)}
-.site-head .btn{min-height:38px;padding:0 16px;font-size:14px}
-@media (max-width:860px){.site-head nav{display:none}.site-head .btn{margin-left:auto}}
-.brand,.site-head .btn{white-space:nowrap}
-@media (max-width:480px){.brand small{display:none}.brand .mark{font-size:17px}}
+    @media (prefers-color-scheme:dark) {
+      :root:not([data-theme="light"]) {
+        --paper: #0C1C26;
+        --paper-2: #122A37;
+        --card: #13293A;
+        --ink: #E4ECEA;
+        --muted: #98AEB5;
+        --rule: #2A4859;
+        --opt: #3CC4A3;
+        --opt-wash: #123A35;
+        --scm: #7FAEDC;
+        --scm-wash: #15304A;
+        --on-ink: #0C1C26;
+        --logo-filter: invert(1);
+        --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 12px 32px -16px rgba(0, 0, 0, .6);
+      }
+    }
 
-/* hero */
-.hero{padding:clamp(48px,8vw,104px) 0 clamp(40px,6vw,72px)}
-.eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:13px;font-weight:700;color:var(--muted);letter-spacing:.06em;margin-bottom:22px}
-.eyebrow::before{content:"";width:28px;height:2px;background:currentColor}
-.hero h1{margin:0;font-weight:900;font-size:clamp(34px,5.4vw,68px);line-height:1.2;letter-spacing:-.015em;max-width:15em}
-.hero h1 .suite{display:block;font-family:var(--num);font-weight:800;font-stretch:118%;font-size:.5em;letter-spacing:.01em;color:var(--muted);margin-bottom:.4em}
-.hero .lead{font-size:clamp(17px,1.7vw,20px);color:var(--muted);max-width:36em;margin:28px 0 34px}
-.hero .actions{display:flex;flex-wrap:wrap;gap:12px}
+    :root[data-theme="dark"] {
+      --paper: #0C1C26;
+      --paper-2: #122A37;
+      --card: #13293A;
+      --ink: #E4ECEA;
+      --muted: #98AEB5;
+      --rule: #2A4859;
+      --opt: #3CC4A3;
+      --opt-wash: #123A35;
+      --scm: #7FAEDC;
+      --scm-wash: #15304A;
+      --on-ink: #0C1C26;
+      --logo-filter: invert(1);
+      --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 12px 32px -16px rgba(0, 0, 0, .6);
+    }
 
-/* request strip */
-.request{margin-top:clamp(40px,6vw,64px);display:grid;grid-template-columns:auto minmax(0,1fr);gap:0 18px;align-items:center;padding:18px 22px;background:var(--card);border:1px solid var(--rule);border-radius:10px;box-shadow:var(--shadow);max-width:760px}
-.request .who{grid-row:span 2;width:40px;height:40px;border-radius:50%;background:var(--paper-2);display:grid;place-items:center;font-size:13px;font-weight:700;color:var(--muted)}
-.request .lbl{font-size:12px;color:var(--muted)}
-.request .txt{font-size:clamp(16px,1.8vw,19px);font-weight:700;line-height:1.6;min-height:1.6em}
-.request .caret{display:inline-block;width:2px;height:1.05em;background:var(--ink);vertical-align:-.15em;margin-left:2px;animation:blink 1s steps(1) infinite}
-@keyframes blink{50%{opacity:0}}
-@media (prefers-reduced-motion:reduce){.request .caret{animation:none}}
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box
+    }
 
-/* products */
-section{padding:clamp(56px,8vw,104px) 0;border-top:1px solid var(--rule)}
-h2{font-size:clamp(26px,3.4vw,40px);line-height:1.35;font-weight:900;margin:0 0 16px;letter-spacing:-.005em}
-h3{font-size:19px;line-height:1.5;margin:0 0 6px;font-weight:700}
-.intro{max-width:40em;color:var(--muted);margin:0 0 44px}
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 72px
+    }
 
-.products{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(20px,3vw,36px)}
-@media (max-width:900px){.products{grid-template-columns:1fr}}
-.product{--accent:var(--opt);--wash:var(--opt-wash);display:flex;flex-direction:column;background:var(--card);border:1px solid var(--rule);border-top:4px solid var(--accent);border-radius:10px;box-shadow:var(--shadow);overflow:hidden}
-.product.scm{--accent:var(--scm);--wash:var(--scm-wash)}
-.product .body{padding:clamp(22px,3vw,34px);display:flex;flex-direction:column;gap:16px;flex:1}
-.product .name{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
-.product .name .mark{font-size:clamp(28px,3vw,36px);color:var(--accent);line-height:1}
-.product .name span:last-child{font-size:14px;font-weight:700;color:var(--muted)}
-.product .tagline{font-size:clamp(20px,2.2vw,24px);font-weight:900;line-height:1.45}
-.product .desc{color:var(--muted);font-size:16px}
-.product ul{list-style:none;margin:0;padding:0;display:grid;gap:8px;font-size:15px}
-.product li{display:grid;grid-template-columns:18px 1fr;gap:8px;line-height:1.65}
-.product li::before{content:"";width:8px;height:8px;margin-top:.55em;border-radius:50%;background:var(--accent)}
-.chips{display:flex;flex-wrap:wrap;gap:6px}
-.chips span{font-size:13px;padding:2px 10px;border-radius:999px;background:var(--wash);color:var(--ink);line-height:1.8}
-.product .ask{margin-top:auto;padding:12px 16px;border-left:3px solid var(--accent);background:var(--wash);font-size:15px;line-height:1.7}
-.product .ask small{display:block;font-size:12px;color:var(--muted)}
-.product .shot{position:relative;aspect-ratio:16/10;overflow:hidden;background:var(--paper-2);border-top:1px solid var(--rule)}
-.product .shot img{width:100%;height:100%;object-fit:cover;object-position:top center}
-.product .shot figcaption{position:absolute;left:12px;bottom:12px;font-size:12px;padding:3px 10px;border-radius:4px;background:color-mix(in srgb,var(--card) 92%,transparent);color:var(--muted)}
-.product .go{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px clamp(22px,3vw,34px);border-top:1px solid var(--rule);text-decoration:none;font-weight:700;color:var(--accent)}
-.product .go:hover{background:var(--wash)}
-.product .go .arrow{transition:transform .15s}
-.product .go:hover .arrow{transform:translateX(4px)}
+    @media (prefers-reduced-motion:reduce) {
+      html {
+        scroll-behavior: auto
+      }
+    }
 
-/* choose */
-.choose{width:100%;border-collapse:collapse;font-size:15px;background:var(--card);border:1px solid var(--rule);border-radius:10px;overflow:hidden}
-.choose th,.choose td{padding:16px 18px;text-align:left;vertical-align:top;border-bottom:1px solid var(--rule);line-height:1.7}
-.choose tr:last-child th,.choose tr:last-child td{border-bottom:0}
-.choose thead th{font-family:var(--num);font-weight:800;font-stretch:112%;font-size:17px;background:var(--paper-2)}
-.choose thead th.o{color:var(--opt)} .choose thead th.s{color:var(--scm)}
-.choose tbody th{width:9em;font-weight:700;color:var(--muted);font-size:14px}
-@media (max-width:700px){
-  .choose,.choose thead,.choose tbody,.choose tr,.choose th,.choose td{display:block;width:auto}
-  .choose thead{display:none}
-  .choose tbody tr{border-bottom:1px solid var(--rule);padding:10px 0}
-  .choose tbody th{border:0;padding:8px 16px 0;width:auto}
-  .choose td{border:0;padding:4px 16px 4px 16px}
-  .choose td::before{content:attr(data-p);display:block;font-family:var(--num);font-weight:800;font-size:13px}
-  .choose td.o::before{color:var(--opt)} .choose td.s::before{color:var(--scm)}
-}
-.note{font-size:14px;color:var(--muted);margin-top:16px}
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--sans);
+      font-size: 17px;
+      line-height: 1.85;
+      font-feature-settings: "palt" 1;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden
+    }
 
-/* shared flow */
-.flow{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;counter-reset:s;border-top:2px solid var(--ink)}
-.flow li{counter-increment:s;padding:22px 22px 8px 0;margin-right:22px;position:relative}
-.flow li::before{content:counter(s,decimal-leading-zero);display:block;font-family:var(--num);font-weight:800;font-stretch:85%;font-size:40px;line-height:1;color:var(--muted);margin-bottom:14px}
-.flow p{font-size:15px;color:var(--muted)}
-@media (max-width:900px){.flow{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media (max-width:520px){.flow{grid-template-columns:1fr}.flow li{margin-right:0;border-bottom:1px solid var(--rule);padding-bottom:20px}}
+    img {
+      max-width: 100%;
+      height: auto;
+      display: block
+    }
 
-/* foundation */
-.split{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(28px,5vw,72px);align-items:start}
-@media (max-width:900px){.split{grid-template-columns:1fr}}
-.stack{display:grid;gap:18px}
-.tile{padding:22px 24px;background:var(--card);border:1px solid var(--rule);border-radius:10px}
-.tile p{font-size:15px;color:var(--muted)}
-.tile .k{font-size:12px;font-weight:700;letter-spacing:.06em;color:var(--muted);margin-bottom:4px}
-.grid4{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
-@media (max-width:620px){.grid4{grid-template-columns:1fr}}
-.plans{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-top:28px}
-@media (max-width:620px){.plans{grid-template-columns:1fr}}
-.plans .tile h3{font-size:17px}
-.ai-list{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px;font-size:14px;color:var(--muted);align-items:center}
-.ai-list b{font-weight:700;color:var(--ink);padding:2px 12px;border:1px solid var(--rule);border-radius:999px;background:var(--card)}
+    a {
+      color: inherit
+    }
 
-/* cta */
-.cta{background:var(--ink);color:var(--on-ink);border-top:0}
-.cta h2{color:var(--on-ink)}
-.cta .intro{color:color-mix(in srgb,var(--on-ink) 75%,transparent)}
-.cta .actions{display:flex;flex-wrap:wrap;gap:12px}
-.cta .intro{max-width:none}
-.cta .btn{background:var(--on-ink);color:var(--ink);border-color:var(--on-ink)}
-.cta .btn:hover{background:var(--signal);border-color:var(--signal);color:#122634}
-.cta .btn.ghost{background:transparent;color:var(--on-ink)}
-.cta .btn.ghost:hover{background:var(--on-ink);color:var(--ink)}
+    h1,
+    h2,
+    h3 {
+      word-break: auto-phrase
+    }
 
-/* contact form（agi4scm と同じ項目・同じ送信の決まり） */
-.cta-grid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:clamp(32px,5vw,72px);align-items:start}
-@media (max-width:960px){.cta-grid{grid-template-columns:minmax(0,1fr)}}
-.cta-list{list-style:none;margin:0;padding:0;border-top:1px solid color-mix(in srgb,var(--on-ink) 25%,transparent)}
-.cta-list li{padding:14px 0;border-bottom:1px solid color-mix(in srgb,var(--on-ink) 25%,transparent);font-size:15px;opacity:.85}
-.cta-list b{opacity:1}
-.form-card{--f-line:var(--rule);--f-accent:var(--scm);background:var(--paper);color:var(--ink);border-radius:10px;padding:clamp(22px,3vw,36px)}
-.form-card p{opacity:1;max-width:none;margin:0}
-.form-card a{color:var(--f-accent)}
-.form-type{border:0;margin:0 0 22px;padding:0;display:flex;flex-wrap:wrap;gap:8px}
-.form-type legend{font-weight:700;margin-bottom:10px;padding:0;font-size:15px}
-.form-type label{position:relative;cursor:pointer}
-.form-type input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer}
-.form-type span{display:inline-block;padding:8px 16px;border:1.5px solid var(--f-line);border-radius:999px;font-size:14px}
-.form-type input:checked+span{border-color:var(--f-accent);background:color-mix(in srgb,var(--f-accent) 12%,var(--paper));font-weight:700}
-.form-type input:focus-visible+span{outline:3px solid var(--signal,#F0B429);outline-offset:2px}
-.fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px 18px}
-@media (max-width:640px){.fields{grid-template-columns:minmax(0,1fr)}}
-.field.full{grid-column:1/-1}
-.field label{display:flex;gap:8px;align-items:baseline;font-size:14px;font-weight:700;margin-bottom:6px}
-.field .req,.field .opt{font-size:11px;font-weight:700;padding:1px 6px;border-radius:3px;line-height:1.6}
-.field .req{background:var(--f-accent);color:var(--paper)}
-.field .opt{background:var(--paper-2);color:var(--muted)}
-.field input,.field select,.field textarea{width:100%;font:inherit;font-size:15px;color:var(--ink);border:1.5px solid var(--f-line);border-radius:4px;padding:10px 12px;background:var(--paper)}
-.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--f-accent);outline:none;box-shadow:0 0 0 3px color-mix(in srgb,var(--f-accent) 22%,transparent)}
-.field [aria-invalid="true"]{border-color:#c0392b}
-.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
-.consent{display:flex;gap:10px;align-items:flex-start;margin:20px 0;font-size:14px}
-.consent input{margin-top:.4em}
-.form-actions{display:flex;flex-wrap:wrap;align-items:center;gap:14px}
-.form-card .btn{background:var(--f-accent);color:var(--paper);border-color:var(--f-accent)}
-.form-card .btn:hover{background:transparent;color:var(--f-accent)}
-.form-card .btn:disabled{opacity:.6;cursor:progress}
-.form-status{font-size:14px;color:var(--muted)}
-.form-status.error{color:#b42318}
-.thanks{display:none}
-.form-card.done form{display:none}
-.form-card.done .thanks{display:block}
-.thanks h3{font-size:20px;margin-bottom:8px}
+    p {
+      margin: 0
+    }
 
-footer{padding:32px 0 48px;font-size:13px;color:var(--muted)}
-footer .wrap{display:flex;flex-wrap:wrap;gap:12px 24px;justify-content:space-between}
-footer nav{display:flex;flex-wrap:wrap;gap:18px}
-footer a{text-decoration:none}
-footer a:hover{text-decoration:underline}
-</style>
+    :focus-visible {
+      outline: 3px solid var(--signal);
+      outline-offset: 3px;
+      border-radius: 2px
+    }
+
+    .skip {
+      position: absolute;
+      left: -999px;
+      top: 8px;
+      z-index: 100;
+      background: var(--ink);
+      color: var(--on-ink);
+      padding: 8px 14px;
+      border-radius: 4px
+    }
+
+    .skip:focus {
+      left: 8px
+    }
+
+    .wrap {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 0 var(--gutter)
+    }
+
+    .mark {
+      font-family: var(--num);
+      font-weight: 800;
+      font-stretch: 112%;
+      letter-spacing: .01em
+    }
+
+    /* header */
+    .site-head {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: color-mix(in srgb, var(--paper) 92%, transparent);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--rule)
+    }
+
+    .site-head .wrap {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      height: 64px
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none
+    }
+
+    .brand img {
+      width: 30px;
+      filter: var(--logo-filter)
+    }
+
+    .brand .mark {
+      font-size: 19px
+    }
+
+    .brand small {
+      font-weight: 500;
+      font-size: 12px;
+      color: var(--muted)
+    }
+
+    .site-head nav {
+      margin-left: auto;
+      display: flex;
+      gap: 22px;
+      font-size: 14px
+    }
+
+    .site-head nav a {
+      text-decoration: none;
+      color: var(--muted)
+    }
+
+    .site-head nav a:hover {
+      color: var(--ink)
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 46px;
+      padding: 0 22px;
+      border-radius: 4px;
+      background: var(--ink);
+      color: var(--on-ink);
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 15px;
+      border: 1.5px solid var(--ink);
+      transition: background-color .15s, color .15s
+    }
+
+    .btn:hover {
+      background: transparent;
+      color: var(--ink)
+    }
+
+    .btn.ghost {
+      background: transparent;
+      color: var(--ink)
+    }
+
+    .btn.ghost:hover {
+      background: var(--ink);
+      color: var(--on-ink)
+    }
+
+    .site-head .btn {
+      min-height: 38px;
+      padding: 0 16px;
+      font-size: 14px
+    }
+
+    @media (max-width:860px) {
+      .site-head nav {
+        display: none
+      }
+
+      .site-head .btn {
+        margin-left: auto
+      }
+    }
+
+    .brand,
+    .site-head .btn {
+      white-space: nowrap
+    }
+
+    @media (max-width:480px) {
+      .brand small {
+        display: none
+      }
+
+      .brand .mark {
+        font-size: 17px
+      }
+    }
+
+    /* hero */
+    .hero {
+      padding: clamp(48px, 8vw, 104px) 0 clamp(40px, 6vw, 72px)
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--muted);
+      letter-spacing: .06em;
+      margin-bottom: 22px
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 28px;
+      height: 2px;
+      background: currentColor
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-weight: 900;
+      font-size: clamp(34px, 5.4vw, 68px);
+      line-height: 1.2;
+      letter-spacing: -.015em;
+      max-width: 15em
+    }
+
+    .hero h1 .suite {
+      display: block;
+      font-family: var(--num);
+      font-weight: 800;
+      font-stretch: 118%;
+      font-size: .5em;
+      letter-spacing: .01em;
+      color: var(--muted);
+      margin-bottom: .4em
+    }
+
+    .hero .lead {
+      font-size: clamp(17px, 1.7vw, 20px);
+      color: var(--muted);
+      max-width: 36em;
+      margin: 28px 0 34px
+    }
+
+    .hero .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px
+    }
+
+    /* request strip */
+    .request {
+      margin-top: clamp(40px, 6vw, 64px);
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
+      gap: 0 18px;
+      align-items: center;
+      padding: 18px 22px;
+      background: var(--card);
+      border: 1px solid var(--rule);
+      border-radius: 10px;
+      box-shadow: var(--shadow);
+      max-width: 760px
+    }
+
+    .request .who {
+      grid-row: span 2;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--paper-2);
+      display: grid;
+      place-items: center;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--muted)
+    }
+
+    .request .lbl {
+      font-size: 12px;
+      color: var(--muted)
+    }
+
+    .request .txt {
+      font-size: clamp(16px, 1.8vw, 19px);
+      font-weight: 700;
+      line-height: 1.6;
+      min-height: 1.6em
+    }
+
+    .request .caret {
+      display: inline-block;
+      width: 2px;
+      height: 1.05em;
+      background: var(--ink);
+      vertical-align: -.15em;
+      margin-left: 2px;
+      animation: blink 1s steps(1) infinite
+    }
+
+    @keyframes blink {
+      50% {
+        opacity: 0
+      }
+    }
+
+    @media (prefers-reduced-motion:reduce) {
+      .request .caret {
+        animation: none
+      }
+    }
+
+    /* products */
+    section {
+      padding: clamp(56px, 8vw, 104px) 0;
+      border-top: 1px solid var(--rule)
+    }
+
+    h2 {
+      font-size: clamp(26px, 3.4vw, 40px);
+      line-height: 1.35;
+      font-weight: 900;
+      margin: 0 0 16px;
+      letter-spacing: -.005em
+    }
+
+    h3 {
+      font-size: 19px;
+      line-height: 1.5;
+      margin: 0 0 6px;
+      font-weight: 700
+    }
+
+    .intro {
+      max-width: 40em;
+      color: var(--muted);
+      margin: 0 0 44px
+    }
+
+    .products {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: clamp(20px, 3vw, 36px)
+    }
+
+    @media (max-width:900px) {
+      .products {
+        grid-template-columns: 1fr
+      }
+    }
+
+    .product {
+      --accent: var(--opt);
+      --wash: var(--opt-wash);
+      display: flex;
+      flex-direction: column;
+      background: var(--card);
+      border: 1px solid var(--rule);
+      border-top: 4px solid var(--accent);
+      border-radius: 10px;
+      box-shadow: var(--shadow);
+      overflow: hidden
+    }
+
+    .product.scm {
+      --accent: var(--scm);
+      --wash: var(--scm-wash)
+    }
+
+    .product .body {
+      padding: clamp(22px, 3vw, 34px);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      flex: 1
+    }
+
+    .product .name {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      flex-wrap: wrap
+    }
+
+    .product .name .mark {
+      font-size: clamp(28px, 3vw, 36px);
+      color: var(--accent);
+      line-height: 1
+    }
+
+    .product .name span:last-child {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--muted)
+    }
+
+    .product .tagline {
+      font-size: clamp(20px, 2.2vw, 24px);
+      font-weight: 900;
+      line-height: 1.45
+    }
+
+    .product .desc {
+      color: var(--muted);
+      font-size: 16px
+    }
+
+    .product ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      gap: 8px;
+      font-size: 15px
+    }
+
+    .product li {
+      display: grid;
+      grid-template-columns: 18px 1fr;
+      gap: 8px;
+      line-height: 1.65
+    }
+
+    .product li::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      margin-top: .55em;
+      border-radius: 50%;
+      background: var(--accent)
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px
+    }
+
+    .chips span {
+      font-size: 13px;
+      padding: 2px 10px;
+      border-radius: 999px;
+      background: var(--wash);
+      color: var(--ink);
+      line-height: 1.8
+    }
+
+    .product .ask {
+      margin-top: auto;
+      padding: 12px 16px;
+      border-left: 3px solid var(--accent);
+      background: var(--wash);
+      font-size: 15px;
+      line-height: 1.7
+    }
+
+    .product .ask small {
+      display: block;
+      font-size: 12px;
+      color: var(--muted)
+    }
+
+    .product .shot {
+      position: relative;
+      aspect-ratio: 16/10;
+      overflow: hidden;
+      background: var(--paper-2);
+      border-top: 1px solid var(--rule)
+    }
+
+    .product .shot img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top center
+    }
+
+    .product .shot figcaption {
+      position: absolute;
+      left: 12px;
+      bottom: 12px;
+      font-size: 12px;
+      padding: 3px 10px;
+      border-radius: 4px;
+      background: color-mix(in srgb, var(--card) 92%, transparent);
+      color: var(--muted)
+    }
+
+    .product .go {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 16px clamp(22px, 3vw, 34px);
+      border-top: 1px solid var(--rule);
+      text-decoration: none;
+      font-weight: 700;
+      color: var(--accent)
+    }
+
+    .product .go:hover {
+      background: var(--wash)
+    }
+
+    .product .go .arrow {
+      transition: transform .15s
+    }
+
+    .product .go:hover .arrow {
+      transform: translateX(4px)
+    }
+
+    /* choose */
+    .choose {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 15px;
+      background: var(--card);
+      border: 1px solid var(--rule);
+      border-radius: 10px;
+      overflow: hidden
+    }
+
+    .choose th,
+    .choose td {
+      padding: 16px 18px;
+      text-align: left;
+      vertical-align: top;
+      border-bottom: 1px solid var(--rule);
+      line-height: 1.7
+    }
+
+    .choose tr:last-child th,
+    .choose tr:last-child td {
+      border-bottom: 0
+    }
+
+    .choose thead th {
+      font-family: var(--num);
+      font-weight: 800;
+      font-stretch: 112%;
+      font-size: 17px;
+      background: var(--paper-2)
+    }
+
+    .choose thead th.o {
+      color: var(--opt)
+    }
+
+    .choose thead th.s {
+      color: var(--scm)
+    }
+
+    .choose tbody th {
+      width: 9em;
+      font-weight: 700;
+      color: var(--muted);
+      font-size: 14px
+    }
+
+    @media (max-width:700px) {
+
+      .choose,
+      .choose thead,
+      .choose tbody,
+      .choose tr,
+      .choose th,
+      .choose td {
+        display: block;
+        width: auto
+      }
+
+      .choose thead {
+        display: none
+      }
+
+      .choose tbody tr {
+        border-bottom: 1px solid var(--rule);
+        padding: 10px 0
+      }
+
+      .choose tbody th {
+        border: 0;
+        padding: 8px 16px 0;
+        width: auto
+      }
+
+      .choose td {
+        border: 0;
+        padding: 4px 16px 4px 16px
+      }
+
+      .choose td::before {
+        content: attr(data-p);
+        display: block;
+        font-family: var(--num);
+        font-weight: 800;
+        font-size: 13px
+      }
+
+      .choose td.o::before {
+        color: var(--opt)
+      }
+
+      .choose td.s::before {
+        color: var(--scm)
+      }
+    }
+
+    .note {
+      font-size: 14px;
+      color: var(--muted);
+      margin-top: 16px
+    }
+
+    /* shared flow */
+    .flow {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 0;
+      counter-reset: s;
+      border-top: 2px solid var(--ink)
+    }
+
+    .flow li {
+      counter-increment: s;
+      padding: 22px 22px 8px 0;
+      margin-right: 22px;
+      position: relative
+    }
+
+    .flow li::before {
+      content: counter(s, decimal-leading-zero);
+      display: block;
+      font-family: var(--num);
+      font-weight: 800;
+      font-stretch: 85%;
+      font-size: 40px;
+      line-height: 1;
+      color: var(--muted);
+      margin-bottom: 14px
+    }
+
+    .flow p {
+      font-size: 15px;
+      color: var(--muted)
+    }
+
+    @media (max-width:900px) {
+      .flow {
+        grid-template-columns: repeat(2, minmax(0, 1fr))
+      }
+    }
+
+    @media (max-width:520px) {
+      .flow {
+        grid-template-columns: 1fr
+      }
+
+      .flow li {
+        margin-right: 0;
+        border-bottom: 1px solid var(--rule);
+        padding-bottom: 20px
+      }
+    }
+
+    /* foundation */
+    .split {
+      display: grid;
+      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+      gap: clamp(28px, 5vw, 72px);
+      align-items: start
+    }
+
+    @media (max-width:900px) {
+      .split {
+        grid-template-columns: 1fr
+      }
+    }
+
+    .stack {
+      display: grid;
+      gap: 18px
+    }
+
+    .tile {
+      padding: 22px 24px;
+      background: var(--card);
+      border: 1px solid var(--rule);
+      border-radius: 10px
+    }
+
+    .tile p {
+      font-size: 15px;
+      color: var(--muted)
+    }
+
+    .tile .k {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .06em;
+      color: var(--muted);
+      margin-bottom: 4px
+    }
+
+    .grid4 {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px
+    }
+
+    @media (max-width:620px) {
+      .grid4 {
+        grid-template-columns: 1fr
+      }
+    }
+
+    .plans {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+      margin-top: 28px
+    }
+
+    @media (max-width:620px) {
+      .plans {
+        grid-template-columns: 1fr
+      }
+    }
+
+    .plans .tile h3 {
+      font-size: 17px
+    }
+
+    .ai-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 22px;
+      font-size: 14px;
+      color: var(--muted);
+      align-items: center
+    }
+
+    .ai-list b {
+      font-weight: 700;
+      color: var(--ink);
+      padding: 2px 12px;
+      border: 1px solid var(--rule);
+      border-radius: 999px;
+      background: var(--card)
+    }
+
+    /* cta */
+    .cta {
+      background: var(--ink);
+      color: var(--on-ink);
+      border-top: 0
+    }
+
+    .cta h2 {
+      color: var(--on-ink)
+    }
+
+    .cta .intro {
+      color: color-mix(in srgb, var(--on-ink) 75%, transparent)
+    }
+
+    .cta .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px
+    }
+
+    .cta .intro {
+      max-width: none
+    }
+
+    .cta .btn {
+      background: var(--on-ink);
+      color: var(--ink);
+      border-color: var(--on-ink)
+    }
+
+    .cta .btn:hover {
+      background: var(--signal);
+      border-color: var(--signal);
+      color: #122634
+    }
+
+    .cta .btn.ghost {
+      background: transparent;
+      color: var(--on-ink)
+    }
+
+    .cta .btn.ghost:hover {
+      background: var(--on-ink);
+      color: var(--ink)
+    }
+
+    /* contact form（agi4scm と同じ項目・同じ送信の決まり） */
+    .cta-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+      gap: clamp(32px, 5vw, 72px);
+      align-items: start
+    }
+
+    @media (max-width:960px) {
+      .cta-grid {
+        grid-template-columns: minmax(0, 1fr)
+      }
+    }
+
+    .cta-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      border-top: 1px solid color-mix(in srgb, var(--on-ink) 25%, transparent)
+    }
+
+    .cta-list li {
+      padding: 14px 0;
+      border-bottom: 1px solid color-mix(in srgb, var(--on-ink) 25%, transparent);
+      font-size: 15px;
+      opacity: .85
+    }
+
+    .cta-list b {
+      opacity: 1
+    }
+
+    .form-card {
+      --f-line: var(--rule);
+      --f-accent: var(--scm);
+      background: var(--paper);
+      color: var(--ink);
+      border-radius: 10px;
+      padding: clamp(22px, 3vw, 36px)
+    }
+
+    .form-card p {
+      opacity: 1;
+      max-width: none;
+      margin: 0
+    }
+
+    .form-card a {
+      color: var(--f-accent)
+    }
+
+    .form-type {
+      border: 0;
+      margin: 0 0 22px;
+      padding: 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px
+    }
+
+    .form-type legend {
+      font-weight: 700;
+      margin-bottom: 10px;
+      padding: 0;
+      font-size: 15px
+    }
+
+    .form-type label {
+      position: relative;
+      cursor: pointer
+    }
+
+    .form-type input {
+      position: absolute;
+      opacity: 0;
+      inset: 0;
+      margin: 0;
+      cursor: pointer
+    }
+
+    .form-type span {
+      display: inline-block;
+      padding: 8px 16px;
+      border: 1.5px solid var(--f-line);
+      border-radius: 999px;
+      font-size: 14px
+    }
+
+    .form-type input:checked+span {
+      border-color: var(--f-accent);
+      background: color-mix(in srgb, var(--f-accent) 12%, var(--paper));
+      font-weight: 700
+    }
+
+    .form-type input:focus-visible+span {
+      outline: 3px solid var(--signal, #F0B429);
+      outline-offset: 2px
+    }
+
+    .fields {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px 18px
+    }
+
+    @media (max-width:640px) {
+      .fields {
+        grid-template-columns: minmax(0, 1fr)
+      }
+    }
+
+    .field.full {
+      grid-column: 1/-1
+    }
+
+    .field label {
+      display: flex;
+      gap: 8px;
+      align-items: baseline;
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 6px
+    }
+
+    .field .req,
+    .field .opt {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 1px 6px;
+      border-radius: 3px;
+      line-height: 1.6
+    }
+
+    .field .req {
+      background: var(--f-accent);
+      color: var(--paper)
+    }
+
+    .field .opt {
+      background: var(--paper-2);
+      color: var(--muted)
+    }
+
+    .field input,
+    .field select,
+    .field textarea {
+      width: 100%;
+      font: inherit;
+      font-size: 15px;
+      color: var(--ink);
+      border: 1.5px solid var(--f-line);
+      border-radius: 4px;
+      padding: 10px 12px;
+      background: var(--paper)
+    }
+
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus {
+      border-color: var(--f-accent);
+      outline: none;
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--f-accent) 22%, transparent)
+    }
+
+    .field [aria-invalid="true"] {
+      border-color: #c0392b
+    }
+
+    .hp {
+      position: absolute;
+      left: -9999px;
+      width: 1px;
+      height: 1px;
+      overflow: hidden
+    }
+
+    .consent {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      margin: 20px 0;
+      font-size: 14px
+    }
+
+    .consent input {
+      margin-top: .4em
+    }
+
+    .form-actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 14px
+    }
+
+    .form-card .btn {
+      background: var(--f-accent);
+      color: var(--paper);
+      border-color: var(--f-accent)
+    }
+
+    .form-card .btn:hover {
+      background: transparent;
+      color: var(--f-accent)
+    }
+
+    .form-card .btn:disabled {
+      opacity: .6;
+      cursor: progress
+    }
+
+    .form-status {
+      font-size: 14px;
+      color: var(--muted)
+    }
+
+    .form-status.error {
+      color: #b42318
+    }
+
+    .thanks {
+      display: none
+    }
+
+    .form-card.done form {
+      display: none
+    }
+
+    .form-card.done .thanks {
+      display: block
+    }
+
+    .thanks h3 {
+      font-size: 20px;
+      margin-bottom: 8px
+    }
+
+    footer {
+      padding: 32px 0 48px;
+      font-size: 13px;
+      color: var(--muted)
+    }
+
+    footer .wrap {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px 24px;
+      justify-content: space-between
+    }
+
+    footer nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 18px
+    }
+
+    footer a {
+      text-decoration: none
+    }
+
+    footer a:hover {
+      text-decoration: underline
+    }
+  </style>
 </head>
+
 <body id="top">
-<a class="skip" href="#main">本文へ移動</a>
+  <a class="skip" href="#main">本文へ移動</a>
 
-<header class="site-head">
-  <div class="wrap">
-    <a class="brand" href="#top" aria-label="MOAI AGI Suite トップへ">
-      <img src="agi4opt/assets/moai-logo.png" alt="" width="30" height="26">
-      <span class="mark">MOAI AGI Suite</span>
-      <small>by MOAI Lab.</small>
-    </a>
-    <nav aria-label="ページ内">
-      <a href="#products">製品</a>
-      <a href="#choose">選び方</a>
-      <a href="#how">共通のしくみ</a>
-      <a href="#foundation">提供形態と安全性</a>
-    </nav>
-    <a class="btn" href="#contact-contact">相談する</a>
-  </div>
-</header>
-
-<main id="main">
-  <div class="hero">
+  <header class="site-head">
     <div class="wrap">
-      <p class="eyebrow">最適化とサプライチェーンのための汎用人工知能</p>
-      <h1><span class="suite">MOAI AGI Suite</span>依頼文とデータを渡せば、検算つきの答えが返ってくる。</h1>
-      <p class="lead">MOAI AGI Suite は、最適化と SCM の専門家の手順を AI に持たせる Agentic AI の製品群です。お手元の AI（Claude・ChatGPT・Gemini など）に日本語で頼むだけで、手法の選択から計算、全制約の検算、ダッシュボードづくりまでを進めます。モデルもコードも、利用者は書きません。</p>
-      <div class="actions">
-        <a class="btn" href="#products">2 つの製品を見る</a>
-        <a class="btn ghost" href="#contact-contact">導入を相談する</a>
-      </div>
-
-      <div class="request" aria-live="off">
-        <span class="who" aria-hidden="true">依頼</span>
-        <span class="lbl" id="req-lbl">AGI4OPT へ</span>
-        <span class="txt"><span id="req-txt">段取り費用付きの多品目生産計画の問題を解いてください。データは添付したよ。</span><span class="caret" aria-hidden="true"></span></span>
-      </div>
+      <a class="brand" href="#top" aria-label="MOAI AGI Suite トップへ">
+        <img src="agi4opt/assets/moai-logo.png" alt="" width="30" height="26">
+        <span class="mark">MOAI AGI Suite</span>
+        <small>by MOAI Lab.</small>
+      </a>
+      <nav aria-label="ページ内">
+        <a href="#products">製品</a>
+        <a href="#choose">選び方</a>
+        <a href="#how">共通のしくみ</a>
+        <a href="#foundation">提供形態と安全性</a>
+      </nav>
+      <a class="btn" href="#contact-contact">相談する</a>
     </div>
-  </div>
+  </header>
 
-  <section id="products" aria-labelledby="products-title">
-    <div class="wrap">
-      <h2 id="products-title">問題から入るか、業務から入るか。</h2>
-      <p class="intro">スイートは 2 つの製品からなります。どちらも同じ基盤（MCP 上のスキル、MOAI クラウド）の上で動き、同じ形で答えを返します。</p>
-
-      <div class="products">
-        <article class="product opt">
-          <div class="body">
-            <p class="name"><span class="mark">AGI4OPT</span><span>最適化のための汎用人工知能</span></p>
-            <p class="tagline">最適化の問題を、言葉とデータで渡すだけ。</p>
-            <p class="desc">性格の違う専門ソルバーが並列に解き、共通の採点器で比べた最良の解を、最適性の保証とともに返します。問題の種類が分からなくても始められます。</p>
-            <ul>
-              <li>文章とデータから制約と評価基準を書き出し、採点器を作る</li>
-              <li>問題の型と規模から担当ソルバーを選び、同時に解かせる</li>
-              <li>最適性を証明できたか、限界との差は何 % かを明記する</li>
-            </ul>
-            <div class="chips" aria-label="主な対象"><span>生産計画</span><span>配送ルート</span><span>勤務表</span><span>工程スケジュール</span></div>
-            <p class="ask"><small>依頼の例</small>段取り費用付きの多品目生産計画の問題を解いてください。データは添付したよ。</p>
-          </div>
-          <figure class="shot" style="margin:0">
-            <img src="agi4opt/assets/production-plan.png" alt="AGI4OPT のダッシュボード。月別の生産量と需要、在庫、設備の稼働率" loading="lazy" width="1379" height="1466">
-            <figcaption>多品目生産計画のダッシュボード</figcaption>
-          </figure>
-          <a class="go" href="agi4opt/">AGI4OPT を詳しく見る <span class="arrow" aria-hidden="true">→</span></a>
-        </article>
-
-        <article class="product scm">
-          <div class="body">
-            <p class="name"><span class="mark">AGI4SCM</span><span>サプライチェーンのための汎用人工知能</span></p>
-            <p class="tagline">サプライチェーンの分析と最適化を、依頼文ひとつで。</p>
-            <p class="desc">需要予測から在庫、物流網、配送、生産、勤務表、途絶リスクまで。23 の専用サーバーが計算を受け持ち、そのまま会議に出せるページにまとめます。</p>
-            <ul>
-              <li>社内の CSV や Excel をそのまま使える。列名が違っても読み取る</li>
-              <li>最適化・予測・シミュレーションの手法を AI が選ぶ</li>
-              <li>需要を満たしているか、能力を超えていないかを検算してから返す</li>
-            </ul>
-            <div class="chips" aria-label="対応分野"><span>需要予測</span><span>在庫分類</span><span>発注方策</span><span>物流ネットワーク</span><span>配送計画</span><span>ロットサイズ</span><span>生産スケジュール</span><span>勤務表</span><span>タスク割当</span><span>途絶リスク</span><span>収益管理</span><span>幹線輸送網</span></div>
-            <p class="ask"><small>依頼の例</small>この需要データを分析して。データは添付したよ。</p>
-          </div>
-          <figure class="shot" style="margin:0">
-            <img src="agi4scm/assets/inventory-classification.jpg" alt="AGI4SCM の在庫分類ダッシュボード。ABC と XYZ で品目を 9 つに分けた結果" loading="lazy" width="1280" height="1800">
-            <figcaption>在庫分類のダッシュボード（例題データ）</figcaption>
-          </figure>
-          <a class="go" href="agi4scm/">AGI4SCM を詳しく見る <span class="arrow" aria-hidden="true">→</span></a>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <section id="choose" aria-labelledby="choose-title">
-    <div class="wrap">
-      <h2 id="choose-title">どちらから始めるか</h2>
-      <p class="intro">手元にあるのが「解きたい問題」なら AGI4OPT、「改善したい業務」なら AGI4SCM が近道です。</p>
-      <table class="choose">
-        <thead>
-          <tr><td></td><th scope="col" class="o">AGI4OPT</th><th scope="col" class="s">AGI4SCM</th></tr>
-        </thead>
-        <tbody>
-          <tr><th scope="row">入り口</th><td class="o" data-p="AGI4OPT">数理最適化の問題（制約と目的がある問題）</td><td class="s" data-p="AGI4SCM">サプライチェーンの業務（予測・在庫・物流・生産・人員）</td></tr>
-          <tr><th scope="row">得意なこと</th><td class="o" data-p="AGI4OPT">複数の専門ソルバーを並列に走らせ、共通の採点器で最良の解を選ぶ</td><td class="s" data-p="AGI4SCM">分析・予測・最適化を組み合わせ、業務の判断に必要な指標までまとめる</td></tr>
-          <tr><th scope="row">返ってくるもの</th><td class="o" data-p="AGI4OPT">最良の解、全制約の検算、ソルバーごとの比較表、最適性の保証の種類、CSV 明細</td><td class="s" data-p="AGI4SCM">地図・ガント・グラフつきのダッシュボード（HTML 1 枚）と CSV</td></tr>
-          <tr><th scope="row">向いている方</th><td class="o" data-p="AGI4OPT">問題の形は見えていて、より良い解と、その品質の裏づけがほしい</td><td class="s" data-p="AGI4SCM">データはあるが、何をどう分析・最適化すればよいかから相談したい</td></tr>
-        </tbody>
-      </table>
-      <p class="note">2 つは同じ基盤の上で動くため、両方を組み合わせて使うこともできます。</p>
-    </div>
-  </section>
-
-  <section id="how" aria-labelledby="how-title">
-    <div class="wrap">
-      <h2 id="how-title">どちらも、専門家の手順を AI がそのまま踏む</h2>
-      <p class="intro">お手元の AI が統括役になり、最適化と SCM の専門家が普段やっている段取りで進めます。</p>
-      <ol class="flow">
-        <li><h3>データと依頼文を渡す</h3><p>社内の CSV や Excel を添えて、決めたいことを日本語で書きます。専門用語は要りません。</p></li>
-        <li><h3>問題を仕様にする</h3><p>守るべき制約と良し悪しの基準を書き出し、どの解も同じ物差しで測れるようにします。</p></li>
-        <li><h3>手法を選んで計算する</h3><p>問題の種類と規模を見て手法を選び、専用サーバーで解きます。選んだ理由も記録します。</p></li>
-        <li><h3>検算してから返す</h3><p>全制約を独立に数え直し、結果をダッシュボードにまとめます。制約を破った解は選びません。</p></li>
-      </ol>
-    </div>
-  </section>
-
-  <section id="foundation" aria-labelledby="foundation-title">
-    <div class="wrap">
-      <div class="split">
-        <div>
-          <h2 id="foundation-title">共通の基盤は、30 年以上のノウハウと、AI に鍵を渡さない設計</h2>
-          <p class="intro" style="margin-bottom:24px">どの手法をいつ使うか、結果のどこを先に確かめるか、どんな読み違いが起きやすいか。研究と実務で積み上げてきた判断を、AI が読める手順にしました。</p>
-          <div class="stack">
-            <div class="tile">
-              <p class="k">Agent Skills</p>
-              <h3>スキル</h3>
-              <p>AI に専門知識を持たせる仕組み。規模に応じた強い定式化、部分問題の反復、列生成法などの使い分けまで含みます。</p>
-            </div>
-            <div class="tile">
-              <p class="k">Skills on MCP</p>
-              <h3>MCP 上のスキル</h3>
-              <p>スキルと計算エンジンをサーバーの中に置いたまま、標準の接続方式（Model Context Protocol）で AI につなぎます。利用者の AI が変わっても、同じ専門家の手順で計算されます。</p>
-            </div>
-          </div>
+  <main id="main">
+    <div class="hero">
+      <div class="wrap">
+        <p class="eyebrow">最適化とサプライチェーンのための汎用人工知能</p>
+        <h1><span class="suite">MOAI AGI Suite</span>依頼文とデータを渡せば、検算つきの答えが返ってくる。</h1>
+        <p class="lead">MOAI AGI Suite は、最適化と SCM の専門家の手順を AI に持たせる Agentic AI の製品群です。お手元の AI（Claude・ChatGPT・Gemini
+          など）に日本語で頼むだけで、手法の選択から計算、全制約の検算、ダッシュボードづくりまでを進めます。モデルもコードも、利用者は書きません。</p>
+        <div class="actions">
+          <a class="btn" href="#products">2 つの製品を見る</a>
+          <a class="btn ghost" href="#contact-contact">導入を相談する</a>
         </div>
-        <div>
-          <h3 style="font-size:15px;color:var(--muted);letter-spacing:.06em;margin-bottom:14px">MOAI クラウドの安全設計</h3>
-          <div class="grid4">
-            <div class="tile"><h3>ゼロトラスト基盤</h3><p>すべての呼び出しを認証し、通信ごとに権限を確かめます。</p></div>
-            <div class="tile"><h3>AI に鍵を渡さない</h3><p>認証情報やライセンスを AI から完全に隔離しています。</p></div>
-            <div class="tile"><h3>青写真によるアプリ配布</h3><p>同じ設計図から、利用者ごとに独立したアプリを立ち上げます。</p></div>
-            <div class="tile"><h3>MCP 上のスキルで統制</h3><p>AI ができることをスキルの範囲に絞り、手順と出力をそろえます。</p></div>
-          </div>
 
-          <h3 style="font-size:15px;color:var(--muted);letter-spacing:.06em;margin:36px 0 0">提供形態（両製品共通）</h3>
-          <div class="plans">
-            <div class="tile"><h3>アシスタント</h3><p>手持ちの AI に、専門家のスキルを付与します。MCP で接続するだけで、計算はサーバー側で実行。手元に重い環境は要りません。</p></div>
-            <div class="tile"><h3>クラウド</h3><p>会社全体で使える専門家です。AI で作った最適化・分析アプリを社内で共有し、画面も AI に頼んで現場向けに直せます。</p></div>
-          </div>
-          <p class="ai-list"><span>呼び出せる AI：</span><b>Claude</b><b>ChatGPT</b><b>Gemini</b><span>ほか MCP に対応したエージェント</span></p>
+        <div class="request" aria-live="off">
+          <span class="who" aria-hidden="true">依頼</span>
+          <span class="lbl" id="req-lbl">AGI4OPT へ</span>
+          <span class="txt"><span id="req-txt">段取り費用付きの多品目生産計画の問題を解いてください。データは添付したよ。</span><span class="caret"
+              aria-hidden="true"></span></span>
         </div>
       </div>
     </div>
-  </section>
 
-  <section class="cta" id="contact" aria-labelledby="cta-title">
-    <div class="wrap cta-grid">
-      <div class="cta-copy">
-        <h2 id="cta-title">手元の問題とデータで、試してみませんか。</h2>
-        <p class="intro">生産計画、配送、在庫、勤務表。課題とデータの形を伺い、どちらの製品が合うかから、例題での体験、導入までご案内します。2 営業日以内に担当者からご連絡します。</p>
-        <ul class="cta-list">
-          <li><b>資料を受け取る</b>　提供形態と導入の流れをまとめた資料（PDF）</li>
-          <li><b>相談する</b>　自社データでの検証と導入</li>
-        </ul>
+    <section id="products" aria-labelledby="products-title">
+      <div class="wrap">
+        <h2 id="products-title">問題から入るか、業務から入るか。</h2>
+        <p class="intro">スイートは 2 つの製品からなります。どちらも同じ基盤（MCP 上のスキル、MOAI クラウド）の上で動き、同じ形で答えを返します。</p>
+
+        <div class="products">
+          <article class="product opt">
+            <div class="body">
+              <p class="name"><span class="mark">AGI4OPT</span><span>最適化のための汎用人工知能</span></p>
+              <p class="tagline">最適化の問題を、言葉とデータで渡すだけ。</p>
+              <p class="desc">性格の違う専門ソルバーが並列に解き、共通の採点器で比べた最良の解を、最適性の保証とともに返します。問題の種類が分からなくても始められます。</p>
+              <ul>
+                <li>文章とデータから制約と評価基準を書き出し、採点器を作る</li>
+                <li>問題の型と規模から担当ソルバーを選び、同時に解かせる</li>
+                <li>最適性を証明できたか、限界との差は何 % かを明記する</li>
+              </ul>
+              <div class="chips" aria-label="主な対象">
+                <span>生産計画</span><span>配送ルート</span><span>勤務表</span><span>工程スケジュール</span></div>
+              <p class="ask"><small>依頼の例</small>段取り費用付きの多品目生産計画の問題を解いてください。データは添付したよ。</p>
+            </div>
+            <figure class="shot" style="margin:0">
+              <img src="agi4opt/assets/production-plan.png" alt="AGI4OPT のダッシュボード。月別の生産量と需要、在庫、設備の稼働率" loading="lazy"
+                width="1379" height="1466">
+              <figcaption>多品目生産計画のダッシュボード</figcaption>
+            </figure>
+            <a class="go" href="agi4opt/">AGI4OPT を詳しく見る <span class="arrow" aria-hidden="true">→</span></a>
+          </article>
+
+          <article class="product scm">
+            <div class="body">
+              <p class="name"><span class="mark">AGI4SCM</span><span>サプライチェーンのための汎用人工知能</span></p>
+              <p class="tagline">サプライチェーンの分析と最適化を、依頼文ひとつで。</p>
+              <p class="desc">需要予測から在庫、物流網、配送、生産、勤務表、途絶リスクまで。23 の専用サーバーが計算を受け持ち、そのまま会議に出せるページにまとめます。</p>
+              <ul>
+                <li>社内の CSV や Excel をそのまま使える。列名が違っても読み取る</li>
+                <li>最適化・予測・シミュレーションの手法を AI が選ぶ</li>
+                <li>需要を満たしているか、能力を超えていないかを検算してから返す</li>
+              </ul>
+              <div class="chips" aria-label="対応分野">
+                <span>需要予測</span><span>在庫分類</span><span>発注方策</span><span>物流ネットワーク</span><span>配送計画</span><span>ロットサイズ</span><span>生産スケジュール</span><span>勤務表</span><span>タスク割当</span><span>途絶リスク</span><span>収益管理</span><span>幹線輸送網</span>
+              </div>
+              <p class="ask"><small>依頼の例</small>この需要データを分析して。データは添付したよ。</p>
+            </div>
+            <figure class="shot" style="margin:0">
+              <img src="agi4scm/assets/inventory-classification.jpg" alt="AGI4SCM の在庫分類ダッシュボード。ABC と XYZ で品目を 9 つに分けた結果"
+                loading="lazy" width="1280" height="1800">
+              <figcaption>在庫分類のダッシュボード（例題データ）</figcaption>
+            </figure>
+            <a class="go" href="agi4scm/">AGI4SCM を詳しく見る <span class="arrow" aria-hidden="true">→</span></a>
+          </article>
+        </div>
       </div>
+    </section>
 
-    <div class="form-card" id="form-card">
-      <!--
+    <section id="choose" aria-labelledby="choose-title">
+      <div class="wrap">
+        <h2 id="choose-title">どちらから始めるか</h2>
+        <p class="intro">手元にあるのが「解きたい問題」なら AGI4OPT、「改善したい業務」なら AGI4SCM が近道です。</p>
+        <table class="choose">
+          <thead>
+            <tr>
+              <td></td>
+              <th scope="col" class="o">AGI4OPT</th>
+              <th scope="col" class="s">AGI4SCM</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">入り口</th>
+              <td class="o" data-p="AGI4OPT">数理最適化の問題（制約と目的がある問題）</td>
+              <td class="s" data-p="AGI4SCM">サプライチェーンの業務（予測・在庫・物流・生産・人員）</td>
+            </tr>
+            <tr>
+              <th scope="row">得意なこと</th>
+              <td class="o" data-p="AGI4OPT">複数の専門ソルバーを並列に走らせ、共通の採点器で最良の解を選ぶ</td>
+              <td class="s" data-p="AGI4SCM">分析・予測・最適化を組み合わせ、業務の判断に必要な指標までまとめる</td>
+            </tr>
+            <tr>
+              <th scope="row">返ってくるもの</th>
+              <td class="o" data-p="AGI4OPT">最良の解、全制約の検算、ソルバーごとの比較表、最適性の保証の種類、CSV 明細</td>
+              <td class="s" data-p="AGI4SCM">地図・ガント・グラフつきのダッシュボード（HTML 1 枚）と CSV</td>
+            </tr>
+            <tr>
+              <th scope="row">向いている方</th>
+              <td class="o" data-p="AGI4OPT">問題の形は見えていて、より良い解と、その品質の裏づけがほしい</td>
+              <td class="s" data-p="AGI4SCM">データはあるが、何をどう分析・最適化すればよいかから相談したい</td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="note">2 つは同じ基盤の上で動くため、両方を組み合わせて使うこともできます。</p>
+      </div>
+    </section>
+
+    <section id="how" aria-labelledby="how-title">
+      <div class="wrap">
+        <h2 id="how-title">どちらも、専門家の手順を AI がそのまま踏む</h2>
+        <p class="intro">お手元の AI が統括役になり、最適化と SCM の専門家が普段やっている段取りで進めます。</p>
+        <ol class="flow">
+          <li>
+            <h3>データと依頼文を渡す</h3>
+            <p>社内の CSV や Excel を添えて、決めたいことを日本語で書きます。専門用語は要りません。</p>
+          </li>
+          <li>
+            <h3>問題を仕様にする</h3>
+            <p>守るべき制約と良し悪しの基準を書き出し、どの解も同じ物差しで測れるようにします。</p>
+          </li>
+          <li>
+            <h3>手法を選んで計算する</h3>
+            <p>問題の種類と規模を見て手法を選び、専用サーバーで解きます。選んだ理由も記録します。</p>
+          </li>
+          <li>
+            <h3>検算してから返す</h3>
+            <p>全制約を独立に数え直し、結果をダッシュボードにまとめます。制約を破った解は選びません。</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <section id="foundation" aria-labelledby="foundation-title">
+      <div class="wrap">
+        <div class="split">
+          <div>
+            <h2 id="foundation-title">共通の基盤は、30 年以上のノウハウと、AI に鍵を渡さない設計</h2>
+            <p class="intro" style="margin-bottom:24px">どの手法をいつ使うか、結果のどこを先に確かめるか、どんな読み違いが起きやすいか。研究と実務で積み上げてきた判断を、AI
+              が読める手順にしました。</p>
+            <div class="stack">
+              <div class="tile">
+                <p class="k">Agent Skills</p>
+                <h3>スキル</h3>
+                <p>AI に専門知識を持たせる仕組み。規模に応じた強い定式化、部分問題の反復、列生成法などの使い分けまで含みます。</p>
+              </div>
+              <div class="tile">
+                <p class="k">Skills on MCP</p>
+                <h3>MCP 上のスキル</h3>
+                <p>スキルと計算エンジンをサーバーの中に置いたまま、標準の接続方式（Model Context Protocol）で AI につなぎます。利用者の AI が変わっても、同じ専門家の手順で計算されます。
+                </p>
+              </div>
+            </div>
+          </div>
+          <div>
+            <h3 style="font-size:15px;color:var(--muted);letter-spacing:.06em;margin-bottom:14px">MOAI クラウドの安全設計</h3>
+            <div class="grid4">
+              <div class="tile">
+                <h3>ゼロトラスト基盤</h3>
+                <p>すべての呼び出しを認証し、通信ごとに権限を確かめます。</p>
+              </div>
+              <div class="tile">
+                <h3>AI に鍵を渡さない</h3>
+                <p>認証情報やライセンスを AI から完全に隔離しています。</p>
+              </div>
+              <div class="tile">
+                <h3>青写真によるアプリ配布</h3>
+                <p>同じ設計図から、利用者ごとに独立したアプリを立ち上げます。</p>
+              </div>
+              <div class="tile">
+                <h3>MCP 上のスキルで統制</h3>
+                <p>AI ができることをスキルの範囲に絞り、手順と出力をそろえます。</p>
+              </div>
+            </div>
+
+            <h3 style="font-size:15px;color:var(--muted);letter-spacing:.06em;margin:36px 0 0">提供形態（両製品共通）</h3>
+            <div class="plans">
+              <div class="tile">
+                <h3>アシスタント</h3>
+                <p>手持ちの AI に、専門家のスキルを付与します。MCP で接続するだけで、計算はサーバー側で実行。手元に重い環境は要りません。</p>
+              </div>
+              <div class="tile">
+                <h3>クラウド</h3>
+                <p>会社全体で使える専門家です。AI で作った最適化・分析アプリを社内で共有し、画面も AI に頼んで現場向けに直せます。</p>
+              </div>
+            </div>
+            <p class="ai-list"><span>呼び出せる AI：</span><b>Claude</b><b>ChatGPT</b><b>Gemini</b><span>ほか MCP
+                に対応したエージェント</span></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta" id="contact" aria-labelledby="cta-title">
+      <div class="wrap cta-grid">
+        <div class="cta-copy">
+          <h2 id="cta-title">手元の問題とデータで、試してみませんか。</h2>
+          <p class="intro">生産計画、配送、在庫、勤務表。課題とデータの形を伺い、どちらの製品が合うかから、例題での体験、導入までご案内します。2 営業日以内に担当者からご連絡します。</p>
+          <ul class="cta-list">
+            <li><b>資料を受け取る</b>　提供形態と導入の流れをまとめた資料（PDF）</li>
+            <li><b>相談する</b>　自社データでの検証と導入</li>
+          </ul>
+        </div>
+
+        <div class="form-card" id="form-card">
+          <!--
         送信先: data-endpoint に、agi4scm/form-backend/Code.gs を配備したウェブアプリの URL（https://script.google.com/macros/s/…/exec）を入れる。
         3 ページ（suite・agi4opt・agi4scm）で同じ受け口を使う。隠し欄 page で、どのページから来たかを区別する。
         空のままだと、sales@moai-lab.jp へメールで問い合わせるよう案内する。
       -->
-      <form id="lead-form" data-endpoint="" novalidate>
-        <fieldset class="form-type">
-          <legend>ご用件</legend>
-          <label><input type="radio" name="inquiry_type" value="document" checked><span>資料請求</span></label>
-          <label><input type="radio" name="inquiry_type" value="contact"><span>相談する</span></label>
-        </fieldset>
+          <form id="lead-form"
+            data-endpoint="https://script.google.com/macros/s/AKfycbx6IN4lCqO0X7J5n0YTV0wXls5N3y1_6Zljb2m226rMSz2J95pUCyCIJzBcNf7Kp4uE/exec"
+            novalidate>
+            <fieldset class="form-type">
+              <legend>ご用件</legend>
+              <label><input type="radio" name="inquiry_type" value="document" checked><span>資料請求</span></label>
+              <label><input type="radio" name="inquiry_type" value="contact"><span>相談する</span></label>
+            </fieldset>
 
-        <div class="fields">
-          <div class="field">
-            <label for="f-company">会社名<span class="req">必須</span></label>
-            <input id="f-company" name="company" type="text" autocomplete="organization" required>
-          </div>
-          <div class="field">
-            <label for="f-dept">部署・役職<span class="opt">任意</span></label>
-            <input id="f-dept" name="department" type="text" autocomplete="organization-title" placeholder="例：生産管理部 課長">
-          </div>
-          <div class="field">
-            <label for="f-name">お名前<span class="req">必須</span></label>
-            <input id="f-name" name="name" type="text" autocomplete="name" required>
-          </div>
-          <div class="field">
-            <label for="f-email">メールアドレス（会社）<span class="req">必須</span></label>
-            <input id="f-email" name="email" type="email" autocomplete="email" inputmode="email" required>
-          </div>
-          <div class="field full">
-            <label for="f-area">関心のある分野<span class="opt">任意</span></label>
-            <select id="f-area" name="area">
-              <option value="">選択してください</option>
-              <optgroup label="AGI4OPT（最適化）">
-                <option>生産計画（最適化）</option>
-                <option>配送ルート</option>
-                <option>工程スケジュール</option>
-                <option>勤務表（最適化）</option>
-              </optgroup>
-              <optgroup label="AGI4SCM（サプライチェーン）">
-                <option>需要予測・在庫</option>
-                <option>物流ネットワーク・配送</option>
-                <option>生産計画・スケジューリング</option>
-                <option>勤務表・タスク割当</option>
-                <option>途絶リスク</option>
-              </optgroup>
-              <option>まだ決めていない</option>
-            </select>
-          </div>
-          <div class="field full">
-            <label for="f-message">ご質問・ご相談の内容<span class="opt">任意</span></label>
-            <textarea id="f-message" name="message" rows="4" placeholder="例：月次の出荷実績が 300 品目あり、生産計画と発注点の見直しを考えています。"></textarea>
+            <div class="fields">
+              <div class="field">
+                <label for="f-company">会社名<span class="req">必須</span></label>
+                <input id="f-company" name="company" type="text" autocomplete="organization" required>
+              </div>
+              <div class="field">
+                <label for="f-dept">部署・役職<span class="opt">任意</span></label>
+                <input id="f-dept" name="department" type="text" autocomplete="organization-title"
+                  placeholder="例：生産管理部 課長">
+              </div>
+              <div class="field">
+                <label for="f-name">お名前<span class="req">必須</span></label>
+                <input id="f-name" name="name" type="text" autocomplete="name" required>
+              </div>
+              <div class="field">
+                <label for="f-email">メールアドレス（会社）<span class="req">必須</span></label>
+                <input id="f-email" name="email" type="email" autocomplete="email" inputmode="email" required>
+              </div>
+              <div class="field full">
+                <label for="f-area">関心のある分野<span class="opt">任意</span></label>
+                <select id="f-area" name="area">
+                  <option value="">選択してください</option>
+                  <optgroup label="AGI4OPT（最適化）">
+                    <option>生産計画（最適化）</option>
+                    <option>配送ルート</option>
+                    <option>工程スケジュール</option>
+                    <option>勤務表（最適化）</option>
+                  </optgroup>
+                  <optgroup label="AGI4SCM（サプライチェーン）">
+                    <option>需要予測・在庫</option>
+                    <option>物流ネットワーク・配送</option>
+                    <option>生産計画・スケジューリング</option>
+                    <option>勤務表・タスク割当</option>
+                    <option>途絶リスク</option>
+                  </optgroup>
+                  <option>まだ決めていない</option>
+                </select>
+              </div>
+              <div class="field full">
+                <label for="f-message">ご質問・ご相談の内容<span class="opt">任意</span></label>
+                <textarea id="f-message" name="message" rows="4"
+                  placeholder="例：月次の出荷実績が 300 品目あり、生産計画と発注点の見直しを考えています。"></textarea>
+              </div>
+            </div>
+
+            <div class="hp" aria-hidden="true">
+              <label for="f-website">ウェブサイト</label>
+              <input id="f-website" name="website" type="text" tabindex="-1" autocomplete="off">
+            </div>
+            <input type="hidden" name="page" value="moai-agi-suite">
+            <input type="hidden" name="utm" value="">
+
+            <label class="consent">
+              <input type="checkbox" name="consent" value="yes" required>
+              <span><a href="privacy.html" target="_blank" rel="noopener">個人情報の取り扱い</a>に同意します。</span>
+            </label>
+
+            <div class="form-actions">
+              <button class="btn" type="submit" id="submit-btn">資料を請求する</button>
+              <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
+            </div>
+          </form>
+
+          <div class="thanks" tabindex="-1" id="thanks">
+            <h3>送信しました。</h3>
+            <p>2 営業日以内に、ご入力のメールアドレスへご連絡します。</p>
           </div>
         </div>
-
-        <div class="hp" aria-hidden="true">
-          <label for="f-website">ウェブサイト</label>
-          <input id="f-website" name="website" type="text" tabindex="-1" autocomplete="off">
-        </div>
-        <input type="hidden" name="page" value="moai-agi-suite">
-        <input type="hidden" name="utm" value="">
-
-        <label class="consent">
-          <input type="checkbox" name="consent" value="yes" required>
-          <span><a href="privacy.html" target="_blank" rel="noopener">個人情報の取り扱い</a>に同意します。</span>
-        </label>
-
-        <div class="form-actions">
-          <button class="btn" type="submit" id="submit-btn">資料を請求する</button>
-          <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
-        </div>
-      </form>
-
-      <div class="thanks" tabindex="-1" id="thanks">
-        <h3>送信しました。</h3>
-        <p>2 営業日以内に、ご入力のメールアドレスへご連絡します。</p>
       </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <span>© 2026 MOAI Lab.</span>
+      <nav aria-label="フッター">
+        <a href="agi4opt/">AGI4OPT</a>
+        <a href="agi4scm/">AGI4SCM</a>
+        <a href="privacy.html">個人情報の取り扱い</a>
+        <a href="https://www.moai-lab.jp/">www.moai-lab.jp</a>
+      </nav>
     </div>
-    </div>
-  </section>
-</main>
+  </footer>
 
-<footer>
-  <div class="wrap">
-    <span>© 2026 MOAI Lab.</span>
-    <nav aria-label="フッター">
-      <a href="agi4opt/">AGI4OPT</a>
-      <a href="agi4scm/">AGI4SCM</a>
-      <a href="privacy.html">個人情報の取り扱い</a>
-      <a href="https://www.moai-lab.jp/">www.moai-lab.jp</a>
-    </nav>
-  </div>
-</footer>
+  <script>
+    (function () {
+      var reqs = [
+        ["AGI4OPT へ", "段取り費用付きの多品目生産計画の問題を解いてください。データは添付したよ。"],
+        ["AGI4SCM へ", "この需要データを分析して。データは添付したよ。"],
+        ["AGI4SCM へ", "明日の配送計画を作って。データは添付したよ。"],
+        ["AGI4SCM へ", "物流ネットワークの最適化をして。データは添付したよ。"],
+        ["AGI4SCM へ", "来月の勤務表を組んで。休み希望は添付したよ。"]
+      ];
+      if (window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      var lbl = document.getElementById("req-lbl"), txt = document.getElementById("req-txt");
+      var i = 0;
+      function type(s, k, done) { txt.textContent = s.slice(0, k); if (k < s.length) setTimeout(function () { type(s, k + 1, done) }, 55); else setTimeout(done, 2600) }
+      function next() { i = (i + 1) % reqs.length; lbl.textContent = reqs[i][0]; type(reqs[i][1], 0, next) }
+      setTimeout(next, 3200);
+    })();
 
-<script>
-(function(){
-  var reqs=[
-    ["AGI4OPT へ","段取り費用付きの多品目生産計画の問題を解いてください。データは添付したよ。"],
-    ["AGI4SCM へ","この需要データを分析して。データは添付したよ。"],
-    ["AGI4SCM へ","明日の配送計画を作って。データは添付したよ。"],
-    ["AGI4SCM へ","物流ネットワークの最適化をして。データは添付したよ。"],
-    ["AGI4SCM へ","来月の勤務表を組んで。休み希望は添付したよ。"]
-  ];
-  if(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches)return;
-  var lbl=document.getElementById("req-lbl"),txt=document.getElementById("req-txt");
-  var i=0;
-  function type(s,k,done){txt.textContent=s.slice(0,k);if(k<s.length)setTimeout(function(){type(s,k+1,done)},55);else setTimeout(done,2600)}
-  function next(){i=(i+1)%reqs.length;lbl.textContent=reqs[i][0];type(reqs[i][1],0,next)}
-  setTimeout(next,3200);
-})();
+    // お問い合わせフォーム（agi4scm/main.js と同じ決まり。受け口は agi4scm/form-backend/Code.gs）
+    (function () {
+      "use strict";
+      var form = document.getElementById("lead-form");
+      if (!form) return;
+      var statusEl = document.getElementById("form-status");
+      var submitBtn = document.getElementById("submit-btn");
+      var labels = { document: "資料を請求する", contact: "相談する" };
 
-// お問い合わせフォーム（agi4scm/main.js と同じ決まり。受け口は agi4scm/form-backend/Code.gs）
-(function () {
-  "use strict";
-  var form = document.getElementById("lead-form");
-  if (!form) return;
-  var statusEl = document.getElementById("form-status");
-  var submitBtn = document.getElementById("submit-btn");
-  var labels = { document: "資料を請求する", contact: "相談する" };
+      var q = new URLSearchParams(location.search), utm = [];
+      q.forEach(function (v, k) { if (k.indexOf("utm_") === 0) utm.push(k + "=" + v); });
+      form.elements.utm.value = utm.join("&");
 
-  var q = new URLSearchParams(location.search), utm = [];
-  q.forEach(function (v, k) { if (k.indexOf("utm_") === 0) utm.push(k + "=" + v); });
-  form.elements.utm.value = utm.join("&");
+      // #contact-document / #contact-contact でご用件を選んだ状態にする（ページ内リンクでも）。
+      function setType(t) {
+        if (!labels[t]) return;
+        form.querySelector('input[name="inquiry_type"][value="' + t + '"]').checked = true;
+        submitBtn.textContent = labels[t];
+      }
+      form.addEventListener("change", function (e) { if (e.target.name === "inquiry_type") setType(e.target.value); });
+      function fromHash() {
+        var m = location.hash.match(/^#contact-(document|contact)$/);
+        if (m) { setType(m[1]); document.getElementById("contact").scrollIntoView(); }
+      }
+      fromHash();
+      window.addEventListener("hashchange", fromHash);
 
-  // #contact-document / #contact-contact でご用件を選んだ状態にする（ページ内リンクでも）。
-  function setType(t) {
-    if (!labels[t]) return;
-    form.querySelector('input[name="inquiry_type"][value="' + t + '"]').checked = true;
-    submitBtn.textContent = labels[t];
-  }
-  form.addEventListener("change", function (e) { if (e.target.name === "inquiry_type") setType(e.target.value); });
-  function fromHash() {
-    var m = location.hash.match(/^#contact-(document|contact)$/);
-    if (m) { setType(m[1]); document.getElementById("contact").scrollIntoView(); }
-  }
-  fromHash();
-  window.addEventListener("hashchange", fromHash);
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        statusEl.textContent = ""; statusEl.className = "form-status";
+        var bad = null;
+        ["company", "name", "email"].forEach(function (n) {
+          var el = form.elements[n], v = el.value.trim();
+          var ok = v !== "" && (n !== "email" || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v));
+          el.setAttribute("aria-invalid", ok ? "false" : "true");
+          if (!ok && !bad) bad = el;
+        });
+        if (bad) { statusEl.textContent = "会社名・お名前・メールアドレスを確かめてください。"; statusEl.className = "form-status error"; bad.focus(); return; }
+        if (!form.elements.consent.checked) { statusEl.textContent = "個人情報の取り扱いへの同意が必要です。"; statusEl.className = "form-status error"; return; }
+        if (form.elements.website.value) return; // bot
 
-  form.addEventListener("submit", function (e) {
-    e.preventDefault();
-    statusEl.textContent = ""; statusEl.className = "form-status";
-    var bad = null;
-    ["company", "name", "email"].forEach(function (n) {
-      var el = form.elements[n], v = el.value.trim();
-      var ok = v !== "" && (n !== "email" || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v));
-      el.setAttribute("aria-invalid", ok ? "false" : "true");
-      if (!ok && !bad) bad = el;
-    });
-    if (bad) { statusEl.textContent = "会社名・お名前・メールアドレスを確かめてください。"; statusEl.className = "form-status error"; bad.focus(); return; }
-    if (!form.elements.consent.checked) { statusEl.textContent = "個人情報の取り扱いへの同意が必要です。"; statusEl.className = "form-status error"; return; }
-    if (form.elements.website.value) return; // bot
-
-    var endpoint = form.getAttribute("data-endpoint");
-    if (!endpoint) {
-      statusEl.innerHTML = 'ただいまフォームから送信できません。お手数ですが <a href="mailto:sales@moai-lab.jp">sales@moai-lab.jp</a> へメールでお問い合わせください。';
-      statusEl.className = "form-status error";
-      return;
-    }
-    var messages = {
-      invalid: "入力内容を確かめてください。",
-      consent: "個人情報の取り扱いへの同意が必要です。",
-      too_many: "続けて送信されました。1 分ほどおいてから、もう一度お試しください。"
-    };
-    submitBtn.disabled = true; statusEl.textContent = "送信しています…";
-    fetch(endpoint, { method: "POST", body: new URLSearchParams(new FormData(form)) })
-      .then(function (res) { if (!res.ok) throw new Error(res.status); return res.json(); })
-      .then(function (data) {
-        if (!data || !data.ok) {
-          submitBtn.disabled = false;
-          statusEl.textContent = (data && messages[data.error]) || "送信できませんでした。時間をおいてもう一度お試しください。";
+        var endpoint = form.getAttribute("data-endpoint");
+        if (!endpoint) {
+          statusEl.innerHTML = 'ただいまフォームから送信できません。お手数ですが <a href="mailto:sales@moai-lab.jp">sales@moai-lab.jp</a> へメールでお問い合わせください。';
           statusEl.className = "form-status error";
           return;
         }
-        document.getElementById("form-card").classList.add("done");
-        document.getElementById("thanks").focus();
-      })
-      .catch(function () {
-        submitBtn.disabled = false;
-        statusEl.innerHTML = '送信できませんでした。時間をおいてもう一度お試しいただくか、<a href="mailto:sales@moai-lab.jp">sales@moai-lab.jp</a> へメールでお問い合わせください。';
-        statusEl.className = "form-status error";
+        var messages = {
+          invalid: "入力内容を確かめてください。",
+          consent: "個人情報の取り扱いへの同意が必要です。",
+          too_many: "続けて送信されました。1 分ほどおいてから、もう一度お試しください。"
+        };
+        submitBtn.disabled = true; statusEl.textContent = "送信しています…";
+        fetch(endpoint, { method: "POST", body: new URLSearchParams(new FormData(form)) })
+          .then(function (res) { if (!res.ok) throw new Error(res.status); return res.json(); })
+          .then(function (data) {
+            if (!data || !data.ok) {
+              submitBtn.disabled = false;
+              statusEl.textContent = (data && messages[data.error]) || "送信できませんでした。時間をおいてもう一度お試しください。";
+              statusEl.className = "form-status error";
+              return;
+            }
+            document.getElementById("form-card").classList.add("done");
+            document.getElementById("thanks").focus();
+          })
+          .catch(function () {
+            submitBtn.disabled = false;
+            statusEl.innerHTML = '送信できませんでした。時間をおいてもう一度お試しいただくか、<a href="mailto:sales@moai-lab.jp">sales@moai-lab.jp</a> へメールでお問い合わせください。';
+            statusEl.className = "form-status error";
+          });
       });
-  });
-})();
-</script>
+    })();
+  </script>
 </body>
+
 </html>
