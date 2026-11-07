@@ -1,0 +1,375 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AGI4SCM｜依頼文とデータだけで、サプライチェーンの分析と最適化を｜MOAI Lab.</title>
+<meta name="description" content="AGI4SCM は、自然言語の依頼と元データだけで、需要予測・在庫・物流網・配送・生産・勤務表・途絶リスクの分析と最適化を行い、検算つきのダッシュボードで返す Agentic AI です。MOAI Lab. 提供。">
+<link rel="canonical" href="https://www.moai-lab.jp/agi4scm/">
+<meta property="og:title" content="AGI4SCM｜サプライチェーンのための汎用人工知能｜MOAI Lab.">
+<meta property="og:url" content="https://www.moai-lab.jp/agi4scm/">
+<meta property="og:image" content="https://www.moai-lab.jp/agi4scm/assets/logistics-network.jpg">
+<meta property="og:locale" content="ja_JP">
+<meta name="twitter:card" content="summary_large_image">
+<meta property="og:description" content="依頼文とデータを渡すだけで、最先端の SCM 解析を検算つきのダッシュボードで。">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&family=Shippori+Mincho+B1:wght@500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<a class="skip" href="#main">本文へ移動</a>
+
+<header class="site-header">
+  <div class="wrap header-row">
+    <a class="brand" href="#top" aria-label="AGI4SCM トップへ">
+      <span class="brand-mark">AGI4SCM</span>
+      <span class="brand-by">by MOAI Lab.</span>
+    </a>
+    <nav class="nav" aria-label="ページ内">
+      <a href="#how">使い方</a>
+      <a href="#examples">できること</a>
+      <a href="#plans">提供形態</a>
+      <a href="#security">安全性</a>
+    </nav>
+    <a class="btn btn-small" href="#contact">相談する</a>
+  </div>
+</header>
+
+<main id="main">
+
+<!-- Hero: the request itself is the product -->
+<section class="hero" id="top">
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <p class="hero-kicker">サプライチェーンのための汎用人工知能</p>
+      <h1 class="hero-request" aria-live="polite">
+        <span class="hero-request-text" id="heroRequest">この需要データを分析して。データは添付したよ。</span><span class="caret" aria-hidden="true"></span>
+      </h1>
+      <p class="hero-lead">
+        書くのはこれだけです。AGI4SCM は依頼文と元データを読み、需要予測・在庫・物流網・配送・生産・勤務表・途絶リスクの分析と最適化を行い、<strong>検算つきのダッシュボード</strong>にまとめて返します。モデルもコードも、利用者は書きません。
+      </p>
+      <div class="hero-actions">
+        <a class="btn" href="#contact">導入を相談する</a>
+        <a class="btn btn-ghost" href="#examples">実際の出力を見る</a>
+      </div>
+    </div>
+    <figure class="hero-shot">
+      <div class="shot-frame">
+        <div class="shot-bar" aria-hidden="true"><i></i><i></i><i></i><span id="heroShotTitle">在庫分類ダッシュボード</span></div>
+        <img id="heroShot" src="assets/inventory-classification.jpg" alt="在庫分類のダッシュボード。ABC 分析と需要変動の分類結果。" width="1280" height="1800">
+      </div>
+      <figcaption>返ってくるのは文章ではなく、そのまま会議に出せるページです（例題データ）。</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- Domains strip -->
+<section class="domains" aria-label="対応する分野">
+  <div class="wrap">
+    <ul class="domain-list">
+      <li>需要予測</li><li>在庫分類</li><li>発注方策</li><li>物流ネットワーク</li><li>配送計画</li><li>ロットサイズ</li><li>生産スケジュール</li><li>勤務表</li><li>タスク割当</li><li>途絶リスク</li><li>収益管理</li><li>幹線輸送網</li>
+    </ul>
+  </div>
+</section>
+
+<!-- How it works: a real sequence -->
+<section class="section" id="how">
+  <div class="wrap">
+    <h2 class="h2">頼み方は、部下に仕事を渡すときと同じ</h2>
+    <p class="section-lead">表計算の CSV を置いて、決めたいことを日本語で書く。あとは AI が専門家の手順どおりに進めます。</p>
+    <ol class="steps">
+      <li>
+        <h3>データを置く</h3>
+        <p>出荷実績、拠点一覧、品目マスタ。社内にある CSV や Excel をそのまま使えます。列名が違っても読み取ります。</p>
+      </li>
+      <li>
+        <h3>依頼文を書く</h3>
+        <p>「何を決めたいか」「どんな条件があるか」「何を見たいか」。専門用語は要りません。</p>
+      </li>
+      <li>
+        <h3>AI が手法を選んで計算する</h3>
+        <p>問題の種類と規模を見て、最適化・予測・シミュレーションの手法を選び、専用サーバーで解きます。</p>
+      </li>
+      <li>
+        <h3>検算してから返す</h3>
+        <p>解から全制約を数え直し、需要を満たしているか、能力を超えていないかを確かめたうえで、ダッシュボードにまとめます。</p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<!-- Comparison -->
+<section class="section section-tint" id="compare">
+  <div class="wrap">
+    <h2 class="h2">同じ依頼でも、スキルの有無で答えが変わる</h2>
+    <p class="section-lead">「段取り費用付きの多品目生産計画を解いて。データは添付したよ。」を、汎用の AI と AGI4SCM に渡した場合。</p>
+    <div class="compare" role="table" aria-label="汎用 AI と AGI4SCM の比較">
+      <div class="compare-row compare-head" role="row">
+        <span role="columnheader"></span>
+        <span role="columnheader">汎用の AI だけ</span>
+        <span role="columnheader">AGI4SCM</span>
+      </div>
+      <div class="compare-row" role="row">
+        <span role="rowheader">モデル化</span>
+        <span role="cell">教科書どおりの定式化を、汎用のソルバーで解く</span>
+        <span role="cell">強い定式化と、規模に応じた専用の解法を自動で選ぶ</span>
+      </div>
+      <div class="compare-row" role="row">
+        <span role="rowheader">大きな問題</span>
+        <span role="cell">小さな例題は解けるが、実務の規模では止まる</span>
+        <span role="cell">数百品目・数百拠点の実務規模でも解を返す</span>
+      </div>
+      <div class="compare-row" role="row">
+        <span role="rowheader">現場の条件</span>
+        <span role="cell">時間枠・車両の制限・休憩などの付加条件に対処できない</span>
+        <span role="cell">ほとんどの実務制約をそのまま書ける</span>
+      </div>
+      <div class="compare-row" role="row">
+        <span role="rowheader">正しさ</span>
+        <span role="cell">出た答えが制約を満たしているかは分からない</span>
+        <span role="cell">検算用の計算で全制約を確かめ、推奨案を示す</span>
+      </div>
+      <div class="compare-row" role="row">
+        <span role="rowheader">出力</span>
+        <span role="cell">テキストだけ</span>
+        <span role="cell">地図・ガント・グラフつきのダッシュボードと CSV</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Examples: the requests are the navigation -->
+<section class="section" id="examples">
+  <div class="wrap">
+    <h2 class="h2">依頼文と、返ってきたページ</h2>
+    <p class="section-lead">左の依頼を選ぶと、AGI4SCM が実際に作ったダッシュボードが表示されます。すべて例題データによる出力です。</p>
+
+    <div class="gallery">
+      <div class="requests" role="tablist" aria-label="依頼の例" aria-orientation="vertical">
+        <button role="tab" id="t-cls" aria-controls="p-shot" aria-selected="true" data-img="inventory-classification.jpg" data-title="在庫分類" data-desc="ABC（売上の重要度）と XYZ（需要の変動）で品目を 9 つに分け、品目群ごとの管理方針を示します。ランクが月ごとにどう入れ替わるかも見えます。">
+          <span class="req-domain">在庫分類</span>
+          <span class="req-text">この需要データを分析して。データは添付したよ。</span>
+        </button>
+        <button role="tab" id="t-inv" aria-controls="p-shot" aria-selected="false" tabindex="-1" data-img="inventory-optimization.jpg" data-title="発注方策" data-desc="全品目の発注量・発注点・安全在庫を求め、安全在庫の金額がどの品目に偏っているかを示します。費用の仮定値は画面に明記されます。">
+          <span class="req-domain">発注方策</span>
+          <span class="req-text">全品目の発注方策を決めて。データは続きだよ。</span>
+        </button>
+        <button role="tab" id="t-fc" aria-controls="p-shot" aria-selected="false" tabindex="-1" data-img="timeseries-forecasting.jpg" data-title="需要予測" data-desc="統計的な基本手法と自動機械学習を同じ検証期間で比べ、系列ごとに当たる方を採ります。学習データへの当てはまりでは選びません。">
+          <span class="req-domain">需要予測</span>
+          <span class="req-text">この需要データを予測して。データは添付したよ。</span>
+        </button>
+        <button role="tab" id="t-dyn" aria-controls="p-shot" aria-selected="false" tabindex="-1" data-img="dynamic-inventory.jpg" data-title="予測と在庫" data-desc="予測を使った発注と過去の平均に基づく発注をシミュレーションで比べ、在庫と欠品がどれだけ動くかを品目ごとに示します。">
+          <span class="req-domain">予測と在庫</span>
+          <span class="req-text">予測に基づく在庫方策の効果を検証して。</span>
+        </button>
+        <button role="tab" id="t-net" aria-controls="p-shot" aria-selected="false" tabindex="-1" data-img="logistics-network.jpg" data-title="物流ネットワーク" data-desc="DC をどこに何か所置き、どの顧客をどの DC に任せるかを、固定費・輸送費・処理能力から決めます。拠点数ごとの費用の比較と CO2 も出ます。">
+          <span class="req-domain">物流ネットワーク</span>
+          <span class="req-text">物流ネットワークの最適化をして。データは添付したよ。</span>
+        </button>
+        <button role="tab" id="t-vrp" aria-controls="p-shot" aria-selected="false" tabindex="-1" data-img="solving-vrp.jpg" data-title="配送計画" data-desc="積載量・時間枠・休憩・車種の制限を守って配車を組み、便ごとの積載率と稼働時間を示します。未割当があれば理由も出ます。">
+          <span class="req-domain">配送計画</span>
+          <span class="req-text">明日の配送計画を作って。データは添付したよ。</span>
+        </button>
+        <button role="tab" id="t-lot" aria-controls="p-shot" aria-selected="false" tabindex="-1" data-img="production-lotsizing.jpg" data-title="ロットサイズ" data-desc="部品表と設備の能力を踏まえて、いつ何をどれだけ作るかを決めます。設備ごとの日次負荷と、物質収支の検算が載ります。">
+          <span class="req-domain">生産計画</span>
+          <span class="req-text">段取り費用付きの生産計画を立てて。</span>
+        </button>
+        <button role="tab" id="t-sch" aria-controls="p-shot" aria-selected="false" tabindex="-1" data-img="optseq-scheduler.jpg" data-title="生産スケジュール" data-desc="ライン・作業者・作業の順序と納期を考えて、ジョブの開始時刻を決めます。資源別のガントチャートと、納期遅れの一覧が出ます。">
+          <span class="req-domain">スケジューリング</span>
+          <span class="req-text">来週の生産スケジュールを組んで。</span>
+        </button>
+        <button role="tab" id="t-sft" aria-controls="p-shot" aria-selected="false" tabindex="-1" data-img="shift-scheduling.jpg" data-title="勤務表" data-desc="必要人数・休み希望・連勤の上限・夜勤明けの休みを守って、1 か月の勤務表を組みます。人が足りない日がひと目で分かります。">
+          <span class="req-domain">勤務表</span>
+          <span class="req-text">来月の勤務表を組んで。休み希望は添付したよ。</span>
+        </button>
+        <button role="tab" id="t-tsk" aria-controls="p-shot" aria-selected="false" tabindex="-1" data-img="task-shift-scheduling.jpg" data-title="タスク割当" data-desc="レジ・品出し・清掃など、時間帯ごとの必要人数を満たすように、勤務時間帯と担当タスク・休憩の位置を同時に決めます。">
+          <span class="req-domain">タスク割当</span>
+          <span class="req-text">店舗の時間帯ごとの仕事の割り当てを決めて。</span>
+        </button>
+        <button role="tab" id="t-risk" aria-controls="p-shot" aria-selected="false" tabindex="-1" data-img="disruption-risk.jpg" data-title="途絶リスク" data-desc="多段の部品表を遡り、どの調達先が止まると、何期で生産が止まるかを測ります。在庫では埋まらないリスクと、在庫を置くべき場所が分かります。">
+          <span class="req-domain">途絶リスク</span>
+          <span class="req-text">サプライチェーンリスクの評価をして。データは添付したよ。</span>
+        </button>
+      </div>
+
+      <div class="panel" id="p-shot" role="tabpanel" aria-labelledby="t-cls">
+        <div class="panel-text">
+          <h3 class="panel-title" id="panelTitle">在庫分類</h3>
+          <p class="panel-desc" id="panelDesc">ABC（売上の重要度）と XYZ（需要の変動）で品目を 9 つに分け、品目群ごとの管理方針を示します。ランクが月ごとにどう入れ替わるかも見えます。</p>
+        </div>
+        <a class="panel-shot" id="panelLink" href="assets/inventory-classification.jpg" target="_blank" rel="noopener">
+          <img id="panelImg" src="assets/inventory-classification.jpg" alt="在庫分類のダッシュボード" width="1280" height="1800" loading="lazy">
+          <span class="panel-open">全体を開く</span>
+        </a>
+      </div>
+    </div>
+
+    <p class="note">ダッシュボードは自己完結の HTML 1 枚で、ブラウザで開くだけで見られます。表は CSV で書き出せます。</p>
+  </div>
+</section>
+
+<!-- Plans -->
+<section class="section section-tint" id="plans">
+  <div class="wrap">
+    <h2 class="h2">使い方に合わせて、2 つの形で提供します</h2>
+    <div class="plans">
+      <article class="plan">
+        <h3 class="plan-name">AGI4SCM アシスタント</h3>
+        <p class="plan-tag">手持ちの AI に、SCM の専門家のスキルを付与</p>
+        <ul class="ticks">
+          <li>Claude・ChatGPT・Gemini など、いま使っている AI から呼び出せます</li>
+          <li>23 の専用サーバーが、分析と最適化の計算を受け持ちます</li>
+          <li>組織で 1 つの鍵を持ち、計算時間をメンバーで共有します</li>
+          <li>データを外に出したくない場合は、自社の環境で動かせます</li>
+        </ul>
+      </article>
+      <article class="plan">
+        <h3 class="plan-name">AGI4SCM クラウド</h3>
+        <p class="plan-tag">会社全体で使える SCM の専門家</p>
+        <ul class="ticks">
+          <li>予測・分類・発注方策のように、複数の機能を組み合わせた Web アプリを作れます</li>
+          <li>アプリの画面は、AI に頼んで現場向けに直せます</li>
+          <li>作ったアプリを社内で共有し、担当者ごとに独立して使えます</li>
+          <li>計画案を保存し、あとから開いて比べられます</li>
+        </ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- Security -->
+<section class="section" id="security">
+  <div class="wrap security">
+    <div>
+      <h2 class="h2">AI に鍵を渡さない設計</h2>
+      <p class="section-lead">AI に業務を任せるうえで問題になるのは、精度より先に統制です。AGI4SCM は MOAI クラウドの上で、AI ができることを最初から限っています。</p>
+    </div>
+    <dl class="facts">
+      <div><dt>ゼロトラスト基盤</dt><dd>すべての呼び出しを認証し、通信ごとに権限を確かめます。</dd></div>
+      <div><dt>完全隔離</dt><dd>AI は計算サーバーの鍵も中身も持ちません。計算の本体は利用者の端末に置かれません。</dd></div>
+      <div><dt>青写真によるアプリ配布</dt><dd>アプリは青写真から利用者ごとに独立して作られ、他の利用者のデータとは混ざりません。</dd></div>
+      <div><dt>MCP 上のスキルによる統制</dt><dd>専門家の手順をサーバー側に置き、AI はその手順の範囲でしか動きません。</dd></div>
+    </dl>
+  </div>
+</section>
+
+<!-- Why: skills on MCP -->
+<section class="section section-ink" id="why">
+  <div class="wrap why">
+    <h2 class="h2">中身は、最適化と SCM に関する 30 年以上のノウハウ</h2>
+    <div class="why-grid">
+      <div>
+        <h3>スキル（Agent Skills）</h3>
+        <p>AI に専門知識を持たせる仕組みです。どの手法をいつ使うか、結果のどこを先に確かめるか、どんな読み違いが起きやすいか。研究と実務で積み上げてきた判断を、AI が読める手順にしました。</p>
+      </div>
+      <div>
+        <h3>MCP 上のスキル（Skills on MCP）</h3>
+        <p>スキルと計算エンジンをサーバーの中に隠し、標準の接続方式（Model Context Protocol）で AI につなぎます。利用者の AI が変わっても、同じ専門家の手順で計算されます。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA + form -->
+<section class="cta" id="contact" aria-labelledby="contact-title">
+  <div class="wrap cta-grid">
+    <div class="cta-copy">
+      <p class="cta-request" id="contact-title">自社のデータで試してみて。</p>
+      <p class="cta-lead">その一言から始めましょう。課題とデータの形を伺い、例題での体験から導入までご案内します。2 営業日以内に担当者からご連絡します。</p>
+      <ul class="cta-list">
+        <li><b>資料を受け取る</b>　提供形態と導入の流れをまとめた資料（PDF）</li>
+        <li><b>相談する</b>　自社データでの検証と導入</li>
+      </ul>
+    </div>
+
+    <div class="form-card" id="form-card">
+      <!--
+        送信先: data-endpoint に、form-backend/Code.gs を配備したウェブアプリの URL（https://script.google.com/macros/s/…/exec）を入れる。
+        内容は application/x-www-form-urlencoded で POST され、受け口が sales@moai-lab.jp へメールで転送する。
+        空のままだと、sales@moai-lab.jp へメールで問い合わせるよう案内する。
+      -->
+      <form id="lead-form" data-endpoint="" novalidate>
+        <fieldset class="form-type">
+          <legend>ご用件</legend>
+          <label><input type="radio" name="inquiry_type" value="document" checked><span>資料請求</span></label>
+          <label><input type="radio" name="inquiry_type" value="contact"><span>相談する</span></label>
+        </fieldset>
+
+        <div class="fields">
+          <div class="field">
+            <label for="f-company">会社名<span class="req">必須</span></label>
+            <input id="f-company" name="company" type="text" autocomplete="organization" required>
+          </div>
+          <div class="field">
+            <label for="f-dept">部署・役職<span class="opt">任意</span></label>
+            <input id="f-dept" name="department" type="text" autocomplete="organization-title" placeholder="例：SCM 企画部 課長">
+          </div>
+          <div class="field">
+            <label for="f-name">お名前<span class="req">必須</span></label>
+            <input id="f-name" name="name" type="text" autocomplete="name" required>
+          </div>
+          <div class="field">
+            <label for="f-email">メールアドレス（会社）<span class="req">必須</span></label>
+            <input id="f-email" name="email" type="email" autocomplete="email" inputmode="email" required>
+          </div>
+          <div class="field full">
+            <label for="f-area">関心のある分野<span class="opt">任意</span></label>
+            <select id="f-area" name="area">
+              <option value="">選択してください</option>
+              <option>需要予測・在庫</option>
+              <option>物流ネットワーク・配送</option>
+              <option>生産計画・スケジューリング</option>
+              <option>勤務表・タスク割当</option>
+              <option>途絶リスク</option>
+              <option>まだ決めていない</option>
+            </select>
+          </div>
+          <div class="field full">
+            <label for="f-message">ご質問・ご相談の内容<span class="opt">任意</span></label>
+            <textarea id="f-message" name="message" rows="4" placeholder="例：月次の出荷実績が 300 品目あり、発注点の見直しを考えています。"></textarea>
+          </div>
+        </div>
+
+        <div class="hp" aria-hidden="true">
+          <label for="f-website">ウェブサイト</label>
+          <input id="f-website" name="website" type="text" tabindex="-1" autocomplete="off">
+        </div>
+        <input type="hidden" name="page" value="agi4scm">
+        <input type="hidden" name="utm" value="">
+
+        <label class="consent">
+          <input type="checkbox" name="consent" value="yes" required>
+          <span><a href="privacy.html" target="_blank" rel="noopener">個人情報の取り扱い</a>に同意します。</span>
+        </label>
+
+        <div class="form-actions">
+          <button class="btn" type="submit" id="submit-btn">資料を請求する</button>
+          <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
+        </div>
+      </form>
+
+      <div class="thanks" tabindex="-1" id="thanks">
+        <h3>送信しました。</h3>
+        <p>2 営業日以内に、ご入力のメールアドレスへご連絡します。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap footer-row">
+    <span>&copy; MOAI Lab.</span>
+    <a href="https://www.moai-lab.jp/">www.moai-lab.jp</a>
+    <a href="privacy.html">個人情報の取り扱い</a>
+    <span>掲載のダッシュボードはすべて例題データによるもので、実在の企業のデータではありません。</span>
+  </div>
+</footer>
+
+<script src="main.js"></script>
+</body>
+</html>

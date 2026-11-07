@@ -1,0 +1,548 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AGI4OPT | 最適化のための汎用人工知能</title>
+<meta name="description" content="自然言語で問題を説明し、元データを渡すだけ。複数の専門ソルバーが並列に解き、共通の採点器で比べた最良の解を、検算とダッシュボードつきで返す Agentic AI。MOAI Lab。">
+<link rel="icon" href="assets/moai-logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,400..800&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F2F5F3;
+  --paper-2:#E6ECE9;
+  --ink:#0F2A3A;
+  --muted:#4C6470;
+  --rule:#C3CFCB;
+  --port:#C23A22;      /* 上界：赤ブイ */
+  --starboard:#0B7D68; /* 下界：緑ブイ */
+  --chart:#2C5A88;
+  --on-ink:#F2F5F3;
+  --code-bg:#E3EAE7;
+  --logo-filter:none;
+  --sans:"Zen Kaku Gothic New",system-ui,-apple-system,"Hiragino Sans",sans-serif;
+  --num:"Archivo","Zen Kaku Gothic New",sans-serif;
+  --gutter:clamp(16px,4vw,48px);
+  --max:1180px;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#0C1E29; --paper-2:#132B39; --ink:#E4ECE8; --muted:#97AEB6; --rule:#29495A;
+    --port:#F06A4E; --starboard:#3CC4A3; --chart:#7FAEDC; --on-ink:#0C1E29; --code-bg:#132B39;
+    --logo-filter:invert(1);
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0C1E29; --paper-2:#132B39; --ink:#E4ECE8; --muted:#97AEB6; --rule:#29495A;
+  --port:#F06A4E; --starboard:#3CC4A3; --chart:#7FAEDC; --on-ink:#0C1E29; --code-bg:#132B39;
+  --logo-filter:invert(1);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:72px}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:17px;line-height:1.85;font-feature-settings:"palt" 1;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img{max-width:100%;display:block}
+a{color:inherit}
+a:focus-visible,button:focus-visible{outline:3px solid var(--chart);outline-offset:3px;border-radius:2px}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 var(--gutter)}
+.num{font-family:var(--num);font-variant-numeric:tabular-nums;font-stretch:90%}
+
+/* header */
+.site-head{position:sticky;top:0;z-index:10;background:color-mix(in srgb,var(--paper) 92%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--rule)}
+.site-head .wrap{display:flex;align-items:center;gap:24px;height:64px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;font-family:var(--num);font-weight:800;font-size:20px;letter-spacing:.01em;font-stretch:110%}
+.brand img{width:30px;height:auto;filter:var(--logo-filter)}
+.brand small{font-family:var(--sans);font-weight:500;font-size:12px;color:var(--muted);letter-spacing:0;font-stretch:100%}
+.site-head nav{margin-left:auto;display:flex;gap:22px;font-size:14px}
+.site-head nav a{text-decoration:none;color:var(--muted)}
+.site-head nav a:hover{color:var(--ink)}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 20px;border-radius:4px;background:var(--ink);color:var(--on-ink);text-decoration:none;font-weight:700;font-size:15px;border:1.5px solid var(--ink)}
+.btn:hover{background:transparent;color:var(--ink)}
+.btn.ghost{background:transparent;color:var(--ink)}
+.btn.ghost:hover{background:var(--ink);color:var(--on-ink)}
+.site-head .btn{min-height:38px;padding:0 16px;font-size:14px}
+@media (max-width:860px){.site-head nav{display:none}.site-head .btn{margin-left:auto}}
+
+/* hero */
+.hero{padding:clamp(40px,7vw,88px) 0 clamp(48px,7vw,96px)}
+.hero .wrap{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:clamp(28px,5vw,72px);align-items:start}
+.hero h1{margin:0;font-weight:900;font-size:clamp(32px,4.3vw,54px);line-height:1.25;letter-spacing:-.01em}
+.hero h1 .ln{display:block;white-space:nowrap}
+.hero h1 .wordmark{display:block;font-family:var(--num);font-weight:800;font-stretch:118%;font-size:.62em;letter-spacing:.01em;color:var(--muted);margin-bottom:.35em}
+.hero .lead{font-size:clamp(17px,1.6vw,19px);color:var(--muted);max-width:30em;margin:28px 0 32px}
+.hero .actions{display:flex;flex-wrap:wrap;gap:12px}
+.prompt{margin:0 0 18px;padding:14px 18px;border-left:3px solid var(--ink);background:var(--paper-2);font-size:15px;line-height:1.7}
+.prompt span{display:block;font-size:12px;color:var(--muted)}
+.chart-box{border-top:2px solid var(--ink);padding-top:14px}
+.chart-head{display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap}
+.chart-head p{margin:0;font-size:13px;color:var(--muted);line-height:1.6}
+.gap{font-family:var(--num);font-weight:800;font-stretch:85%;font-size:clamp(40px,5vw,60px);line-height:1;font-variant-numeric:tabular-nums}
+.gap small{font-family:var(--sans);font-size:13px;font-weight:500;color:var(--muted);margin-left:6px}
+#bound-chart{width:100%;height:auto;display:block;margin-top:8px;overflow:visible}
+#bound-chart text{font-family:var(--num);font-size:11px;fill:var(--muted)}
+#bound-chart .lbl{font-family:var(--sans);font-size:12px;font-weight:700}
+.legend{display:flex;flex-wrap:wrap;gap:18px;font-size:13px;color:var(--muted);margin-top:6px}
+.legend i{display:inline-block;width:18px;height:3px;vertical-align:middle;margin-right:6px}
+.chart-note{font-size:12px;color:var(--muted);margin:10px 0 0;line-height:1.6}
+@media (max-width:900px){.hero .wrap{grid-template-columns:1fr}}
+
+/* sections */
+section{padding:clamp(56px,8vw,104px) 0;border-top:1px solid var(--rule)}
+h2{font-size:clamp(26px,3.3vw,40px);line-height:1.35;font-weight:900;margin:0 0 18px;letter-spacing:-.005em}
+h3{font-size:19px;line-height:1.5;margin:0 0 6px;font-weight:700}
+.intro{max-width:38em;color:var(--muted);margin:0 0 44px}
+
+/* flow */
+.flow{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;counter-reset:s}
+.flow li{position:relative;padding:22px 24px 4px 0;border-top:2px solid var(--ink);counter-increment:s}
+.flow li::before{content:counter(s);font-family:var(--num);font-weight:800;font-size:44px;line-height:1;display:block;margin-bottom:14px;font-stretch:85%}
+.flow p{margin:0;color:var(--muted);font-size:15px;line-height:1.75}
+@media (max-width:860px){.flow{grid-template-columns:1fr 1fr;row-gap:28px}}
+@media (max-width:520px){.flow{grid-template-columns:1fr}}
+
+/* compare */
+.versus{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(24px,4vw,56px)}
+.versus .col h3{font-size:22px;padding-bottom:10px;border-bottom:2px solid var(--rule)}
+.versus .col.on h3{border-color:var(--starboard)}
+.versus ul{list-style:none;padding:0;margin:14px 0 0}
+.versus li{padding:10px 0 10px 26px;position:relative;border-bottom:1px dashed var(--rule);font-size:16px}
+.versus li::before{position:absolute;left:0;top:10px;font-weight:900;font-family:var(--num)}
+.versus .off li::before{content:"×";color:var(--port)}
+.versus .on li::before{content:"✓";color:var(--starboard)}
+@media (max-width:760px){.versus{grid-template-columns:1fr}}
+
+/* gallery */
+.gallery{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:clamp(16px,2.4vw,28px);margin-top:8px}
+.gallery figure{margin:0}
+.gallery img{border:1px solid var(--rule);border-radius:4px;width:100%;height:auto;background:#fff}
+.gallery figcaption{font-size:14px;color:var(--muted);margin-top:10px;line-height:1.6}
+.gallery .g1{grid-column:span 7}
+.gallery .g2{grid-column:span 5}
+.gallery .g3{grid-column:span 5}
+.gallery .g4{grid-column:span 7;align-self:center}
+.gallery .g4 h3{font-size:22px}
+.gallery .g4 p{color:var(--muted);margin:0 0 12px}
+@media (max-width:860px){.gallery .g1,.gallery .g2,.gallery .g3,.gallery .g4{grid-column:1/-1}}
+
+/* offering */
+.offer{display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,4vw,56px)}
+.offer article{padding-top:18px;border-top:2px solid var(--ink)}
+.offer h3{font-size:24px;font-weight:900}
+.offer .sub{color:var(--muted);margin:0 0 14px}
+.offer ul{margin:0;padding-left:1.2em;font-size:15.5px}
+.offer li{margin-bottom:6px}
+.clients{margin-top:44px;padding:20px 24px;background:var(--paper-2);border-radius:4px;display:flex;flex-wrap:wrap;gap:12px 32px;align-items:baseline}
+.clients strong{font-size:15px}
+.clients span{color:var(--muted);font-size:15px}
+.secure{margin-top:56px}
+.secure dl{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px;margin:20px 0 0}
+.secure dt{font-weight:700;font-size:16px;margin-bottom:6px}
+.secure dd{margin:0;color:var(--muted);font-size:14.5px;line-height:1.75}
+@media (max-width:860px){.offer{grid-template-columns:1fr}.secure dl{grid-template-columns:1fr 1fr}}
+@media (max-width:520px){.secure dl{grid-template-columns:1fr}}
+
+/* cta */
+.cta{background:var(--ink);color:var(--on-ink);border-top:0}
+.cta h2{font-size:clamp(28px,4vw,48px);word-break:auto-phrase}
+.cta p{max-width:34em;opacity:.8;margin:0 0 28px}
+.cta .btn{background:var(--on-ink);color:var(--ink);border-color:var(--on-ink)}
+.cta .btn:hover{background:transparent;color:var(--on-ink)}
+.cta .btn.ghost{background:transparent;color:var(--on-ink)}
+.cta .btn.ghost:hover{background:var(--on-ink);color:var(--ink)}
+.cta .actions{display:flex;flex-wrap:wrap;gap:12px}
+/* contact form（agi4scm-hp と同じ項目・同じ送信の決まり） */
+.cta-grid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:clamp(32px,5vw,72px);align-items:start}
+@media (max-width:960px){.cta-grid{grid-template-columns:minmax(0,1fr)}}
+.cta-list{list-style:none;margin:0;padding:0;border-top:1px solid color-mix(in srgb,var(--on-ink) 25%,transparent)}
+.cta-list li{padding:14px 0;border-bottom:1px solid color-mix(in srgb,var(--on-ink) 25%,transparent);font-size:15px;opacity:.85}
+.cta-list b{opacity:1}
+.form-card{--f-line:var(--rule);--f-accent:var(--starboard);background:var(--paper);color:var(--ink);border-radius:10px;padding:clamp(22px,3vw,36px)}
+.form-card p{opacity:1;max-width:none;margin:0}
+.form-card a{color:var(--f-accent)}
+.form-type{border:0;margin:0 0 22px;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+.form-type legend{font-weight:700;margin-bottom:10px;padding:0;font-size:15px}
+.form-type label{position:relative;cursor:pointer}
+.form-type input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer}
+.form-type span{display:inline-block;padding:8px 16px;border:1.5px solid var(--f-line);border-radius:999px;font-size:14px}
+.form-type input:checked+span{border-color:var(--f-accent);background:color-mix(in srgb,var(--f-accent) 12%,var(--paper));font-weight:700}
+.form-type input:focus-visible+span{outline:3px solid var(--signal,#F0B429);outline-offset:2px}
+.fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px 18px}
+@media (max-width:640px){.fields{grid-template-columns:minmax(0,1fr)}}
+.field.full{grid-column:1/-1}
+.field label{display:flex;gap:8px;align-items:baseline;font-size:14px;font-weight:700;margin-bottom:6px}
+.field .req,.field .opt{font-size:11px;font-weight:700;padding:1px 6px;border-radius:3px;line-height:1.6}
+.field .req{background:var(--f-accent);color:var(--paper)}
+.field .opt{background:var(--paper-2);color:var(--muted)}
+.field input,.field select,.field textarea{width:100%;font:inherit;font-size:15px;color:var(--ink);border:1.5px solid var(--f-line);border-radius:4px;padding:10px 12px;background:var(--paper)}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--f-accent);outline:none;box-shadow:0 0 0 3px color-mix(in srgb,var(--f-accent) 22%,transparent)}
+.field [aria-invalid="true"]{border-color:#c0392b}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.consent{display:flex;gap:10px;align-items:flex-start;margin:20px 0;font-size:14px}
+.consent input{margin-top:.4em}
+.form-actions{display:flex;flex-wrap:wrap;align-items:center;gap:14px}
+.form-card .btn{background:var(--f-accent);color:var(--paper);border-color:var(--f-accent)}
+.form-card .btn:hover{background:transparent;color:var(--f-accent)}
+.form-card .btn:disabled{opacity:.6;cursor:progress}
+.form-status{font-size:14px;color:var(--muted)}
+.form-status.error{color:#b42318}
+.thanks{display:none}
+.form-card.done form{display:none}
+.form-card.done .thanks{display:block}
+.thanks h3{font-size:20px;margin-bottom:8px}
+
+footer{padding:28px 0 40px;font-size:13px;color:var(--muted)}
+footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
+</style>
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="AGI4OPT トップへ"><img src="assets/moai-logo.png" alt="">AGI4OPT <small>by MOAI Lab</small></a>
+    <nav aria-label="ページ内">
+      <a href="#how">しくみ</a>
+      <a href="#offer">提供形態</a>
+    </nav>
+    <a class="btn" href="#contact-contact">相談する</a>
+  </div>
+</header>
+
+<main id="top">
+<section class="hero" style="border-top:0">
+  <div class="wrap">
+    <div>
+      <h1><span class="wordmark">AGI4OPT</span><span class="ln">最適化の問題を、</span><span class="ln">言葉とデータで</span><span class="ln">渡すだけ。</span></h1>
+      <p class="lead">AGI4OPT は最適化のための汎用人工知能です。自然言語で問題を説明し元データを添えると、性格の違う専門ソルバーが並列に解き、共通の採点器で比べた最良の解を、検算とダッシュボードをつけて返します。</p>
+      <div class="actions">
+        <a class="btn" href="#contact-contact">導入を相談する</a>
+        <a class="btn ghost" href="#how">しくみを見る</a>
+      </div>
+    </div>
+
+    <div>
+      <p class="prompt"><span>依頼</span>段取り費用付きの多品目生産計画の問題を解いてください。データは添付したよ。</p>
+      <figure class="chart-box" style="margin:0">
+        <div class="chart-head">
+          <p>24 品目 × 8 機械 × 36 か月、0-1 変数 864 個<br>最良の計画の費用と、それ以上安くできない限界との差</p>
+          <div class="gap" aria-live="off"><span id="gap-value">28.6</span>%<small>差</small></div>
+        </div>
+        <svg id="bound-chart" viewBox="0 0 600 320" role="img" aria-labelledby="chart-title chart-desc">
+          <title id="chart-title">上界と下界の収束</title>
+          <desc id="chart-desc">60 秒の探索で、見つかった最良の計画の費用（上界）は 6,081 万円から 4,495 万円へ下がり、これより安い計画はないという限界（下界）は 4,340 万円から 4,458 万円へ上がった。差は 28.6% から 0.81% に縮んだ。</desc>
+        </svg>
+        <div class="legend"><span><i style="background:var(--port)"></i>上界：見つかった最良の計画の費用</span><span><i style="background:var(--starboard)"></i>下界：これより安い計画はないという限界</span></div>
+        <figcaption class="chart-note">AGI4OPT の実行記録（2026 年 11 月 6 日）の探索ログをそのまま描画。縦軸は費用（百万円）、横軸は経過秒（平方根目盛り）。</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<section id="how">
+  <div class="wrap">
+    <h2>依頼から答えまで、統括役の AI が段取りする</h2>
+    <p class="intro">お手元の AI（Claude・ChatGPT・Gemini など）が統括役になり、最適化の専門家が普段やっている手順をそのまま踏みます。問題の種類が分からなくても始められます。</p>
+    <ol class="flow">
+      <li><h3>問題を仕様にする</h3><p>文章とデータから、守るべき制約と良し悪しの基準を書き出し、どの解も同じ物差しで測れる採点器を作ります。</p></li>
+      <li><h3>担当を選び、並列に解く</h3><p>問題の型と規模から向いている担当を選び、同時に解かせます。選んだ理由と省いた理由も記録します。</p></li>
+      <li><h3>共通の採点器で比べる</h3><p>担当の自己申告ではなく、採点器で採点し直した値だけで順位をつけます。制約を破った解は選びません。</p></li>
+      <li><h3>最良の解と保証を返す</h3><p>最適性を証明できたか、限界との差は何 % か、保証はないのかを明記し、検算済みのダッシュボードを添えます。</p></li>
+    </ol>
+  </div>
+</section>
+
+<section id="compare">
+  <div class="wrap">
+    <h2>同じ依頼でも、スキルの有無で答えが変わる</h2>
+    <p class="intro">AI は最適化のコードを書けます。ただ、教科書どおりのモデルを汎用ソルバーに渡すだけでは、小さな例題は解けても実務の規模では止まります。AGI4OPT のスキルには、最適化と SCM に関する 30 年以上のノウハウが入っています。</p>
+    <div class="versus">
+      <div class="col off">
+        <h3>スキルなしの AI</h3>
+        <ul>
+          <li>通常の混合整数最適化としてモデル化し、汎用ソルバーで解く</li>
+          <li>小規模の例題は解けるが、大規模になると解けない</li>
+          <li>現場の付加条件に対処できない</li>
+          <li>出力はテキストだけ</li>
+        </ul>
+      </div>
+      <div class="col on">
+        <h3>AGI4OPT スキルを使う AI</h3>
+        <ul>
+          <li>規模に応じて強い定式化、部分問題の反復、列生成法を使い分ける</li>
+          <li>複数の最先端の解き方で解き、時間と精度を比べる</li>
+          <li>検算用のコードで解の正しさを確かめ、推奨する方法を示す</li>
+          <li>結果をダッシュボードにまとめて返す</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section id="dashboards">
+  <div class="wrap">
+    <h2>答えは、読めるダッシュボードで返ってくる</h2>
+    <p class="intro">数字の羅列ではなく、現場で判断に使える形にまとめます。制約をすべて独立に検算した結果を、目的関数の値より先に載せます。</p>
+    <div class="gallery">
+      <figure class="g1"><img src="assets/route-map.jpg" alt="新木場の物流センターから東京東部の店舗へ向かう 5 便の配送ルートを色分けした地図と、便ごとの訪問順・時刻の一覧" loading="lazy" width="1400" height="1000"><figcaption>配送ルート地図。便ごとの訪問順、積載率、出発と帰着の時刻（地図：地理院タイル）</figcaption></figure>
+      <figure class="g2"><img src="assets/production-plan.png" alt="6 製品の月別生産量と需要、月末在庫、2 ラインの稼働率を示すグラフ" loading="lazy" width="1379" height="1466"><figcaption>多品目生産計画。月別の生産量と需要、在庫、設備の稼働率</figcaption></figure>
+      <figure class="g3"><img src="assets/dashboard-schedule.png" alt="53 ジョブ・6 資源の工程スケジュールのサマリー、検算結果、資源別ガントチャート" loading="lazy" width="1180" height="880"><figcaption>受注生産の工程スケジュール。検算の結果と資源別ガントチャート</figcaption></figure>
+      <div class="g4">
+        <h3>ダッシュボードに必ず入るもの</h3>
+        <p>最良の解の要約と主要な指標</p>
+        <p>全制約の独立な検算（どの制約を、何件確かめたか）</p>
+        <p>担当ごとの比較表と、最適性の保証の種類</p>
+        <p>CSV などの明細。そのまま次の業務へ渡せます</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="offer">
+  <div class="wrap">
+    <h2>2 つの使い方</h2>
+    <p class="intro">個人の手元の AI に専門家の腕を足すことも、会社全体の最適化の窓口にすることもできます。</p>
+    <div class="offer">
+      <article>
+        <h3>AGI4OPT アシスタント</h3>
+        <p class="sub">手持ちの AI に、最適化の専門家のスキルを付与します。</p>
+        <ul>
+          <li>MCP（Model Context Protocol）で接続するだけ</li>
+          <li>スキルの中身はサーバー側に置いたまま「MCP 上のスキル」として提供</li>
+          <li>計算はサーバー側で実行。手元に重い環境は不要</li>
+        </ul>
+      </article>
+      <article>
+        <h3>AGI4OPT クラウド</h3>
+        <p class="sub">会社全体で使える最適化の専門家です。</p>
+        <ul>
+          <li>AI で自動生成した最適化アプリを社内で共有</li>
+          <li>アプリの画面も、AI に頼んで直してから配布</li>
+          <li>複数の MCP を組み合わせた Web アプリを作れる</li>
+        </ul>
+      </article>
+    </div>
+    <div class="clients"><strong>呼び出せる AI</strong><span>Claude</span><span>ChatGPT</span><span>Gemini</span><span>MCP に対応したその他のエージェント</span></div>
+
+    <div class="secure">
+      <h3 style="font-size:22px">MOAI クラウドの安全設計</h3>
+      <dl>
+        <div><dt>ゼロトラスト基盤</dt><dd>すべての接続を都度確かめる基盤の上で、安全に AI を使えます。</dd></div>
+        <div><dt>青写真によるアプリ配布</dt><dd>同じ設計図から、ユーザーごとに独立したアプリを立ち上げます。</dd></div>
+        <div><dt>AI に鍵を渡さない</dt><dd>認証情報やライセンスを AI から完全に隔離して設計しています。</dd></div>
+        <div><dt>MCP 上のスキルで統制</dt><dd>AI ができることをスキルの範囲に絞り、手順と出力をそろえます。</dd></div>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<section class="cta" id="contact" aria-labelledby="contact-title">
+  <div class="wrap cta-grid">
+    <div class="cta-copy">
+      <h2 id="contact-title">手元の問題で、試してみませんか。</h2>
+      <p>生産計画、配送、勤務表、スケジュール。説明の文章とデータのサンプルがあれば、どの担当が勝つかを一緒に確かめられます。2 営業日以内に担当者からご連絡します。</p>
+      <ul class="cta-list">
+        <li><b>資料を受け取る</b>　提供形態と導入の流れをまとめた資料（PDF）</li>
+        <li><b>相談する</b>　自社の問題とデータでの検証と導入</li>
+      </ul>
+    </div>
+
+    <div class="form-card" id="form-card">
+      <!--
+        送信先: data-endpoint に、agi4scm-hp/form-backend/Code.gs を配備したウェブアプリの URL（https://script.google.com/macros/s/…/exec）を入れる。
+        3 ページ（suite・agi4opt・agi4scm）で同じ受け口を使う。隠し欄 page で、どのページから来たかを区別する。
+        空のままだと、sales@moai-lab.jp へメールで問い合わせるよう案内する。
+      -->
+      <form id="lead-form" data-endpoint="" novalidate>
+        <fieldset class="form-type">
+          <legend>ご用件</legend>
+          <label><input type="radio" name="inquiry_type" value="document" checked><span>資料請求</span></label>
+          <label><input type="radio" name="inquiry_type" value="contact"><span>相談する</span></label>
+        </fieldset>
+
+        <div class="fields">
+          <div class="field">
+            <label for="f-company">会社名<span class="req">必須</span></label>
+            <input id="f-company" name="company" type="text" autocomplete="organization" required>
+          </div>
+          <div class="field">
+            <label for="f-dept">部署・役職<span class="opt">任意</span></label>
+            <input id="f-dept" name="department" type="text" autocomplete="organization-title" placeholder="例：生産管理部 課長">
+          </div>
+          <div class="field">
+            <label for="f-name">お名前<span class="req">必須</span></label>
+            <input id="f-name" name="name" type="text" autocomplete="name" required>
+          </div>
+          <div class="field">
+            <label for="f-email">メールアドレス（会社）<span class="req">必須</span></label>
+            <input id="f-email" name="email" type="email" autocomplete="email" inputmode="email" required>
+          </div>
+          <div class="field full">
+            <label for="f-area">関心のある分野<span class="opt">任意</span></label>
+            <select id="f-area" name="area">
+              <option value="">選択してください</option>
+              <option>生産計画・ロットサイズ</option>
+              <option>配送ルート</option>
+              <option>勤務表</option>
+              <option>工程スケジュール</option>
+              <option>その他の最適化問題</option>
+              <option>まだ決めていない</option>
+            </select>
+          </div>
+          <div class="field full">
+            <label for="f-message">ご質問・ご相談の内容<span class="opt">任意</span></label>
+            <textarea id="f-message" name="message" rows="4" placeholder="例：24 品目・8 機械の生産計画を、段取り費用込みで見直したいと考えています。"></textarea>
+          </div>
+        </div>
+
+        <div class="hp" aria-hidden="true">
+          <label for="f-website">ウェブサイト</label>
+          <input id="f-website" name="website" type="text" tabindex="-1" autocomplete="off">
+        </div>
+        <input type="hidden" name="page" value="agi4opt">
+        <input type="hidden" name="utm" value="">
+
+        <label class="consent">
+          <input type="checkbox" name="consent" value="yes" required>
+          <span><a href="privacy.html" target="_blank" rel="noopener">個人情報の取り扱い</a>に同意します。</span>
+        </label>
+
+        <div class="form-actions">
+          <button class="btn" type="submit" id="submit-btn">資料を請求する</button>
+          <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
+        </div>
+      </form>
+
+      <div class="thanks" tabindex="-1" id="thanks">
+        <h3>送信しました。</h3>
+        <p>2 営業日以内に、ご入力のメールアドレスへご連絡します。</p>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 MOAI Lab</span>
+    <span style="display:flex;flex-wrap:wrap;gap:18px"><a href="privacy.html">個人情報の取り扱い</a><a href="https://www.moai-lab.jp/" target="_blank" rel="noopener">www.moai-lab.jp</a></span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  // 実行記録 2026-11-06-lot-sizing-large の探索ログ：[秒, 下界, 上界]
+  const D=[[0,43399000,60813000],[1,43981000,60597000],[2,44013000,58434000],[3,44013000,56525240],[4,44013000,53124260],[5,44013000,51976640],[6,44013000,48647350],[7,44028000,45402100],[8,44044000,45399860],[10,44098000,45374910],[11,44113000,45346250],[12,44158000,45250970],[15,44186000,45211820],[17,44193000,45208880],[19,44210000,45206050],[20,44220000,45164470],[25,44253000,45147670],[27,44289000,45123020],[28,44306000,45114010],[30,44335000,45064760],[32,44357000,45009820],[34,44387000,45002690],[35,44395000,44991640],[37,44417000,44984220],[40,44432000,44984000],[41,44452000,44983730],[42,44460000,44982590],[44,44471000,44975950],[45,44479000,44968640],[50,44525000,44969000],[53,44552000,44961420],[54,44558000,44960950],[55,44560000,44961000],[56,44570000,44955150],[58,44577000,44949160],[60.06,44583067,44949163]];
+  const svg=document.getElementById('bound-chart'), NS='http://www.w3.org/2000/svg';
+  const W=600,H=320,L=44,R=12,T=10,B=28,TMAX=60.06,YMIN=42,YMAX=62;
+  const x=t=>L+Math.sqrt(t/TMAX)*(W-L-R);
+  const y=v=>T+(YMAX-v/1e6)/(YMAX-YMIN)*(H-T-B);
+  const el=(n,a)=>{const e=document.createElementNS(NS,n);for(const k in a)e.setAttribute(k,a[k]);svg.appendChild(e);return e};
+  [44,48,52,56,60].forEach(v=>{el('line',{x1:L,x2:W-R,y1:y(v*1e6),y2:y(v*1e6),stroke:'var(--rule)','stroke-width':1});el('text',{x:L-8,y:y(v*1e6)+4,'text-anchor':'end'}).textContent=v;});
+  [0,1,5,15,30,60].forEach(t=>{el('text',{x:x(t),y:H-8,'text-anchor':'middle'}).textContent=t+(t===60?' 秒':'');});
+  const step=i=>{let d='M'+x(D[0][0])+','+y(D[0][i]);for(let k=1;k<D.length;k++){d+='H'+x(D[k][0]).toFixed(1)+'V'+y(D[k][i]).toFixed(1);}return d};
+  const band=el('path',{d:step(2)+'V'+y(D[D.length-1][1])+[...D].reverse().map((p,k,a)=>'H'+x(p[0]).toFixed(1)+'V'+y(p[1]).toFixed(1)).join('')+'Z',fill:'var(--port)',opacity:0,'fill-opacity':.08});
+  const ub=el('path',{d:step(2),fill:'none',stroke:'var(--port)','stroke-width':2.5,'stroke-linejoin':'round'});
+  const lb=el('path',{d:step(1),fill:'none',stroke:'var(--starboard)','stroke-width':2.5,'stroke-linejoin':'round'});
+  const last=D[D.length-1];
+  const t1=el('text',{x:W-R,y:y(last[2])-10,'text-anchor':'end',class:'lbl',fill:'var(--port)',opacity:0});t1.textContent='4,495 万円';
+  const t2=el('text',{x:W-R,y:y(last[1])+18,'text-anchor':'end',class:'lbl',fill:'var(--starboard)',opacity:0});t2.textContent='4,458 万円';
+  const gapEl=document.getElementById('gap-value');
+  const gapAt=t=>{let p=D[0];for(const q of D){if(q[0]<=t)p=q;else break}return (p[2]-p[1])/p[2]*100};
+  const finish=()=>{gapEl.textContent='0.81';[t1,t2].forEach(e=>e.setAttribute('opacity',1));band.setAttribute('opacity',1)};
+  const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(reduce){finish();return}
+  [ub,lb].forEach(p=>{const len=p.getTotalLength();p.style.strokeDasharray=len;p.style.strokeDashoffset=len;p._len=len});
+  const DUR=3200;let start=null;
+  function frame(ts){
+    if(start===null)start=ts;
+    const f=Math.min(1,(ts-start)/DUR), ease=1-Math.pow(1-f,2);
+    const tNow=Math.pow(ease,2)*TMAX; // 平方根目盛りに合わせて進む
+    const xNow=x(tNow);
+    [ub,lb].forEach(p=>{
+      // xNow までの長さを二分探索
+      let lo=0,hi=p._len;for(let i=0;i<22;i++){const m=(lo+hi)/2;if(p.getPointAtLength(m).x<xNow)lo=m;else hi=m}
+      p.style.strokeDashoffset=p._len-(f>=1?p._len:hi);
+    });
+    gapEl.textContent=gapAt(tNow).toFixed(gapAt(tNow)<10?2:1);
+    if(f<1)requestAnimationFrame(frame);else finish();
+  }
+  setTimeout(()=>requestAnimationFrame(frame),400);
+})();
+
+// お問い合わせフォーム（agi4scm-hp/main.js と同じ決まり。受け口は agi4scm-hp/form-backend/Code.gs）
+(function () {
+  "use strict";
+  var form = document.getElementById("lead-form");
+  if (!form) return;
+  var statusEl = document.getElementById("form-status");
+  var submitBtn = document.getElementById("submit-btn");
+  var labels = { document: "資料を請求する", contact: "相談する" };
+
+  var q = new URLSearchParams(location.search), utm = [];
+  q.forEach(function (v, k) { if (k.indexOf("utm_") === 0) utm.push(k + "=" + v); });
+  form.elements.utm.value = utm.join("&");
+
+  // #contact-document / #contact-contact でご用件を選んだ状態にする（ページ内リンクでも）。
+  function setType(t) {
+    if (!labels[t]) return;
+    form.querySelector('input[name="inquiry_type"][value="' + t + '"]').checked = true;
+    submitBtn.textContent = labels[t];
+  }
+  form.addEventListener("change", function (e) { if (e.target.name === "inquiry_type") setType(e.target.value); });
+  function fromHash() {
+    var m = location.hash.match(/^#contact-(document|contact)$/);
+    if (m) { setType(m[1]); document.getElementById("contact").scrollIntoView(); }
+  }
+  fromHash();
+  window.addEventListener("hashchange", fromHash);
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    statusEl.textContent = ""; statusEl.className = "form-status";
+    var bad = null;
+    ["company", "name", "email"].forEach(function (n) {
+      var el = form.elements[n], v = el.value.trim();
+      var ok = v !== "" && (n !== "email" || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v));
+      el.setAttribute("aria-invalid", ok ? "false" : "true");
+      if (!ok && !bad) bad = el;
+    });
+    if (bad) { statusEl.textContent = "会社名・お名前・メールアドレスを確かめてください。"; statusEl.className = "form-status error"; bad.focus(); return; }
+    if (!form.elements.consent.checked) { statusEl.textContent = "個人情報の取り扱いへの同意が必要です。"; statusEl.className = "form-status error"; return; }
+    if (form.elements.website.value) return; // bot
+
+    var endpoint = form.getAttribute("data-endpoint");
+    if (!endpoint) {
+      statusEl.innerHTML = 'ただいまフォームから送信できません。お手数ですが <a href="mailto:sales@moai-lab.jp">sales@moai-lab.jp</a> へメールでお問い合わせください。';
+      statusEl.className = "form-status error";
+      return;
+    }
+    var messages = {
+      invalid: "入力内容を確かめてください。",
+      consent: "個人情報の取り扱いへの同意が必要です。",
+      too_many: "続けて送信されました。1 分ほどおいてから、もう一度お試しください。"
+    };
+    submitBtn.disabled = true; statusEl.textContent = "送信しています…";
+    fetch(endpoint, { method: "POST", body: new URLSearchParams(new FormData(form)) })
+      .then(function (res) { if (!res.ok) throw new Error(res.status); return res.json(); })
+      .then(function (data) {
+        if (!data || !data.ok) {
+          submitBtn.disabled = false;
+          statusEl.textContent = (data && messages[data.error]) || "送信できませんでした。時間をおいてもう一度お試しください。";
+          statusEl.className = "form-status error";
+          return;
+        }
+        document.getElementById("form-card").classList.add("done");
+        document.getElementById("thanks").focus();
+      })
+      .catch(function () {
+        submitBtn.disabled = false;
+        statusEl.innerHTML = '送信できませんでした。時間をおいてもう一度お試しいただくか、<a href="mailto:sales@moai-lab.jp">sales@moai-lab.jp</a> へメールでお問い合わせください。';
+        statusEl.className = "form-status error";
+      });
+  });
+})();
+</script>
+</body>
+</html>
