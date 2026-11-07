@@ -27,7 +27,7 @@ HTML・CSS・JS だけの静的なページなので、ビルドは要りませ�
 
 ## フォームの受け口を配備する
 
-この受け口は、MOAI AGI Suite のページ（`../index.html`）と AGI4OPT のページ（`../agi4opt-hp/index.html`）のフォームでも共用します。
+この受け口は、MOAI AGI Suite のページ（`../index.html`）と AGI4OPT のページ（`../agi4opt/index.html`）のフォームでも共用します。
 3 ページとも `<form id="lead-form" data-endpoint="">` に同じ URL を入れてください。件名の `[AGI4SCM LP]` の部分は、送信元のページに合わせて `[AGI4OPT LP]`・`[MOAI AGI Suite LP]` に変わります。
 
 フォームの内容は、Google Apps Script のウェブアプリが受け取り、**sales@moai-lab.jp** へメールで転送します
@@ -50,7 +50,7 @@ HTML・CSS・JS だけの静的なページなので、ビルドは要りませ�
 ## 公開の前にすること
 
 1. **フォームの受け口を配備する**（上の手順）。
-2. **置き場所**は `https://agi.moai-lab.jp/agi4scm-hp/` を前提にしています（リポジトリの直下が `https://agi.moai-lab.jp/`）。別の場所に置くなら、`index.html` と `privacy.html` の `canonical`、`index.html` の `og:url`・`og:image` を直してください。suite（`../index.html`・`../privacy.html`）と AGI4OPT（`../agi4opt-hp/`）も同じです。
+2. **置き場所**は `https://agi.moai-lab.jp/agi4scm/` を前提にしています（リポジトリの直下が `https://agi.moai-lab.jp/`）。別の場所に置くなら、`index.html` と `privacy.html` の `canonical`、`index.html` の `og:url`・`og:image` を直してください。suite（`../index.html`・`../privacy.html`）と AGI4OPT（`../agi4opt/`）も同じです。
 3. **個人情報の取り扱い（`privacy.html`）を確かめる。** 全社の[プライバシーポリシー](https://www.moai-lab.jp/about/privacy-policy)と会社概要（所在地・代表者）をもとに書き、
    このフォームで実際に起きること（Google Workspace での保管、Cookie を使わないこと）を足しました。
    「取り扱いの委託」と「安全管理」は当社の約束になる部分なので、社内で確認してください。
@@ -61,5 +61,5 @@ HTML・CSS・JS だけの静的なページなので、ビルドは要りませ�
 ## 手元で見る
 
 ```bash
-python3 -m http.server 8313 --directory agi4scm-hp
+python3 -m http.server 8313 --directory agi4scm
 ```

@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>MOAI AGI Suite | 最適化とサプライチェーンのための汎用人工知能</title>
 <meta name="description" content="MOAI AGI Suite は、自然言語の依頼と元データだけで、最適化問題とサプライチェーンの分析・最適化を行い、検算つきのダッシュボードで返す Agentic AI 群です。AGI4OPT と AGI4SCM の 2 製品からなります。MOAI Lab.">
-<link rel="icon" href="agi4opt-hp/assets/moai-logo.png">
+<link rel="icon" href="agi4opt/assets/moai-logo.png">
 <link rel="canonical" href="https://agi.moai-lab.jp/">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://agi.moai-lab.jp/">
-<meta property="og:image" content="https://agi.moai-lab.jp/agi4scm-hp/assets/logistics-network.jpg">
+<meta property="og:image" content="https://agi.moai-lab.jp/agi4scm/assets/logistics-network.jpg">
 <meta property="og:locale" content="ja_JP">
 <meta property="og:site_name" content="MOAI AGI Suite">
 <meta name="twitter:card" content="summary_large_image">
@@ -185,7 +185,7 @@ h3{font-size:19px;line-height:1.5;margin:0 0 6px;font-weight:700}
 .cta .btn.ghost{background:transparent;color:var(--on-ink)}
 .cta .btn.ghost:hover{background:var(--on-ink);color:var(--ink)}
 
-/* contact form（agi4scm-hp と同じ項目・同じ送信の決まり） */
+/* contact form（agi4scm と同じ項目・同じ送信の決まり） */
 .cta-grid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:clamp(32px,5vw,72px);align-items:start}
 @media (max-width:960px){.cta-grid{grid-template-columns:minmax(0,1fr)}}
 .cta-list{list-style:none;margin:0;padding:0;border-top:1px solid color-mix(in srgb,var(--on-ink) 25%,transparent)}
@@ -238,7 +238,7 @@ footer a:hover{text-decoration:underline}
 <header class="site-head">
   <div class="wrap">
     <a class="brand" href="#top" aria-label="MOAI AGI Suite トップへ">
-      <img src="agi4opt-hp/assets/moai-logo.png" alt="" width="30" height="26">
+      <img src="agi4opt/assets/moai-logo.png" alt="" width="30" height="26">
       <span class="mark">MOAI AGI Suite</span>
       <small>by MOAI Lab.</small>
     </a>
@@ -291,10 +291,10 @@ footer a:hover{text-decoration:underline}
             <p class="ask"><small>依頼の例</small>段取り費用付きの多品目生産計画の問題を解いてください。データは添付したよ。</p>
           </div>
           <figure class="shot" style="margin:0">
-            <img src="agi4opt-hp/assets/production-plan.png" alt="AGI4OPT のダッシュボード。月別の生産量と需要、在庫、設備の稼働率" loading="lazy" width="1379" height="1466">
+            <img src="agi4opt/assets/production-plan.png" alt="AGI4OPT のダッシュボード。月別の生産量と需要、在庫、設備の稼働率" loading="lazy" width="1379" height="1466">
             <figcaption>多品目生産計画のダッシュボード</figcaption>
           </figure>
-          <a class="go" href="agi4opt-hp/">AGI4OPT を詳しく見る <span class="arrow" aria-hidden="true">→</span></a>
+          <a class="go" href="agi4opt/">AGI4OPT を詳しく見る <span class="arrow" aria-hidden="true">→</span></a>
         </article>
 
         <article class="product scm">
@@ -311,10 +311,10 @@ footer a:hover{text-decoration:underline}
             <p class="ask"><small>依頼の例</small>この需要データを分析して。データは添付したよ。</p>
           </div>
           <figure class="shot" style="margin:0">
-            <img src="agi4scm-hp/assets/inventory-classification.jpg" alt="AGI4SCM の在庫分類ダッシュボード。ABC と XYZ で品目を 9 つに分けた結果" loading="lazy" width="1280" height="1800">
+            <img src="agi4scm/assets/inventory-classification.jpg" alt="AGI4SCM の在庫分類ダッシュボード。ABC と XYZ で品目を 9 つに分けた結果" loading="lazy" width="1280" height="1800">
             <figcaption>在庫分類のダッシュボード（例題データ）</figcaption>
           </figure>
-          <a class="go" href="agi4scm-hp/">AGI4SCM を詳しく見る <span class="arrow" aria-hidden="true">→</span></a>
+          <a class="go" href="agi4scm/">AGI4SCM を詳しく見る <span class="arrow" aria-hidden="true">→</span></a>
         </article>
       </div>
     </div>
@@ -404,7 +404,7 @@ footer a:hover{text-decoration:underline}
 
     <div class="form-card" id="form-card">
       <!--
-        送信先: data-endpoint に、agi4scm-hp/form-backend/Code.gs を配備したウェブアプリの URL（https://script.google.com/macros/s/…/exec）を入れる。
+        送信先: data-endpoint に、agi4scm/form-backend/Code.gs を配備したウェブアプリの URL（https://script.google.com/macros/s/…/exec）を入れる。
         3 ページ（suite・agi4opt・agi4scm）で同じ受け口を使う。隠し欄 page で、どのページから来たかを区別する。
         空のままだと、sales@moai-lab.jp へメールで問い合わせるよう案内する。
       -->
@@ -489,8 +489,8 @@ footer a:hover{text-decoration:underline}
   <div class="wrap">
     <span>© 2026 MOAI Lab.</span>
     <nav aria-label="フッター">
-      <a href="agi4opt-hp/">AGI4OPT</a>
-      <a href="agi4scm-hp/">AGI4SCM</a>
+      <a href="agi4opt/">AGI4OPT</a>
+      <a href="agi4scm/">AGI4SCM</a>
       <a href="privacy.html">個人情報の取り扱い</a>
       <a href="https://www.moai-lab.jp/">www.moai-lab.jp</a>
     </nav>
@@ -514,7 +514,7 @@ footer a:hover{text-decoration:underline}
   setTimeout(next,3200);
 })();
 
-// お問い合わせフォーム（agi4scm-hp/main.js と同じ決まり。受け口は agi4scm-hp/form-backend/Code.gs）
+// お問い合わせフォーム（agi4scm/main.js と同じ決まり。受け口は agi4scm/form-backend/Code.gs）
 (function () {
   "use strict";
   var form = document.getElementById("lead-form");
