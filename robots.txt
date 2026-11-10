@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /agi4scm/form-backend/
+
+Sitemap: https://agi.moai-lab.jp/sitemap.xml
